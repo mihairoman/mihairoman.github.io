@@ -40,13 +40,12 @@ html, body {
     font-size: 2em;
     text-align: center;
     margin: 0 auto;
-    position: absolute;
     letter-spacing: 5px; }
 
 .content {
-  height: 100vh;
+  height: 70vh;
   padding: 50px 0;
-  max-width: 640px;
+  max-width: 80vw;
   text-align: center;
   margin: 0 auto; }
   .content hr {
@@ -54,5 +53,28 @@ html, body {
   .content header h1 {
     font-family: "Roboto", sans-serif;
     font-weight: lighter; }
+  .content.presentation {
+    background-color: hotpink;
+    display: flex;
+    flex-direction: column; }
+  .content.skills {
+    background-color: royalblue;
+    display: flex; }
+    .content.skills > .large-container {
+      background-color: deepskyblue;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      height: 100%;
+      width: 100%; }
+      .content.skills > .large-container > .small-container {
+        background-color: yellow;
+        width: 200px;
+        height: 250px; }
+  .content.testimonies {
+    background-color: violet; }
+  .content.contact {
+    background-color: #333; }
 
 /*# sourceMappingURL=base.css.map */

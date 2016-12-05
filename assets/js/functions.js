@@ -1,30 +1,55 @@
 (function() {
 
-    var model = {
-        title: null
-    };
+    var model = {};
 
-    var octopus = {
+    var controller = {
         init: function() {
-            model.title = document.getElementById('title');
-
             view.init();
-        },
-        getTitle: function() {
-            return model.title;
         }
     };
 
     var view = {
+        topDistance: 0,
+        maxHeight: 0,
+        title: null,
+        ticking: false,
+
         init: function() {
+            this.title = document.getElementById('title');
+            this.maxHeight = document.getElementsByClassName('intro')[0].offsetHeight;
+            this.initListeners();
+        },
+
+        initListeners: function() {
             addEventListener("scroll", function(event) {
-                var title = octopus.getTitle(),
-                    distance = document.body.scrollTop;
-                title.style.transform = `translate(0px, ${distance/2.2}px)`;
-                title.style.webkitFilter = `blur(${distance/300}px)`;
+                view.topDistance = scrollY;
+                if (view.topDistance < view.maxHeight) {
+                    view.requestTick(view.parallaxTitle);
+                }
             });
+        },
+
+        /**
+         *   Performs CSS modifications on the title in order to achieve a parallax & blurr effect
+         */
+        parallaxTitle: function() {
+            view.ticking = false;
+            view.title.style.transform = `translate(0px, ${view.topDistance/2.2}px)`;
+            view.title.style.webkitFilter = `blur(${view.topDistance/300}px)`;
+        },
+
+        /**
+         *   General function for animation optimizations. Passes to {@link requestAnimationFrame} the function
+         *   which performs DOM modifications. If a {@link requestAnimationFrame} is already requested, we won't initiate another one.
+         *  @param {function} updateFunc - Function which performs the animations
+         */
+        requestTick: function(updateFunc) {
+            if (!view.ticking) {
+                requestAnimationFrame(updateFunc);
+            }
+            view.ticking = true;
         }
     };
 
-    octopus.init();
+    controller.init();
 })();
