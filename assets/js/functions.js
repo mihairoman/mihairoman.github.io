@@ -1,4 +1,5 @@
 (function() {
+    require('../stylesheets/base.css');
 
     var model = {};
 
