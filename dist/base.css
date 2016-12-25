@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,300i,400i|Roboto:100,300,400|Lato:100,300,400");
-.anaglyph {
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,300i,400i|Roboto:100,300,400|Lato:100,300,400);.anaglyph {
   box-sizing: content-box;
   border: none;
   color: #FE667B;
@@ -33,17 +32,18 @@ html, body {
   height: 100vh;
   z-index: -2;
   background-size: cover;
-  background-image: url(../../assets/img/header-min.jpg);
+  background-image: url(img/e540bd69ded2cf7c56e65fed4361741c.jpg);
   background-position: top center;
   background-attachment: fixed; }
-  .intro h1 {
+  .intro #title {
+    text-transform: uppercase;
     align-self: center;
     font-size: 2em;
     text-align: center;
     margin: 0 auto;
-    letter-spacing: 5px;
+    letter-spacing: 4px;
     z-index: -1; }
-  .intro h3 {
+  .intro #sub-title {
     text-align: center;
     color: white;
     text-shadow: 2px 1px 2px #333;
@@ -84,5 +84,3 @@ html, body {
     background-color: violet; }
   .content.contact {
     background-color: #333; }
-
-/*# sourceMappingURL=base.css.map */

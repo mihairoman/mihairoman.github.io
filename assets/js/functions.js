@@ -1,6 +1,6 @@
+require('../index.html');
+require('../stylesheets/sass/base.sass');
 (function() {
-    require('../stylesheets/base.css');
-
     var model = {};
 
     var controller = {
@@ -35,8 +35,8 @@
          */
         parallaxTitle: function() {
             view.ticking = false;
-            view.title.style.transform = `translate(0px, ${view.topDistance/2.2}px)`;
-            view.title.style.webkitFilter = `blur(${view.topDistance/300}px)`;
+            //view.title.style.transform = `translate(0px, ${view.topDistance/2.2}px)`;
+            //view.title.style.webkitFilter = `blur(${view.topDistance/300}px)`;
             //  view.title.style.transform = `scale(${1-view.topDistance/2000})`;
         },
 
