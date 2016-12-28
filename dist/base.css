@@ -16,6 +16,19 @@
   text-overflow: clip;
   text-shadow: 5px 5px 0 #ffd217, 10px 10px 0 #5ac7ff, 15px 14px 0 #ffd217, 20px 20px 0 #5ac7ff; }
 
+::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  width: 10px; }
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(85, 85, 85, 0.2);
+  border-radius: 7px; }
+
+html, body {
+  scroll-behavior: smooth; }
+
 html, body {
   height: 100%;
   width: 100%;
