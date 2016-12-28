@@ -39,9 +39,10 @@ module.exports = {
         }, {
             test: /\.sass$/,
             exclude: /node_modules/,
-            loader: ExtractTextPlugin.extract('css-loader?importLoaders=1!postcss-loader!sass-loader')
+            loader: ExtractTextPlugin.extract('css-loader?sourceMap!postcss-loader!sass-loader?sourceMap')
         }]
     },
+    devtool: '#source-map',
     plugins: [
         new ExtractTextPlugin('base.css')
     ]
