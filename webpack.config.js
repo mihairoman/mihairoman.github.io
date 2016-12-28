@@ -34,10 +34,12 @@ module.exports = {
             ]
         }, {
             test: /\.html$/,
+            exclude: /node_modules/,
             loader: 'file-loader?name=[name].[ext]!extract-loader!html-loader'
         }, {
             test: /\.sass$/,
-            loader: ExtractTextPlugin.extract('css-loader!sass-loader')
+            exclude: /node_modules/,
+            loader: ExtractTextPlugin.extract('css-loader?importLoaders=1!postcss-loader!sass-loader')
         }]
     },
     plugins: [

@@ -3,7 +3,6 @@
   border: none;
   color: #FE667B;
   text-align: center;
-  -o-text-overflow: clip;
   text-overflow: clip;
   letter-spacing: 3px;
   text-shadow: 2px 1px 1px #BEDFD4, 3px 0 1px #EF303B; }
@@ -14,7 +13,6 @@
   font: normal 84px/normal "Roboto", Helvetica, sans-serif;
   color: white;
   text-align: center;
-  -o-text-overflow: clip;
   text-overflow: clip;
   text-shadow: 5px 5px 0 #ffd217, 10px 10px 0 #5ac7ff, 15px 14px 0 #ffd217, 20px 20px 0 #5ac7ff; }
 
@@ -25,9 +23,16 @@ html, body {
   margin: 0; }
 
 .intro {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   position: relative;
   height: 100vh;
   z-index: -2;
@@ -37,7 +42,9 @@ html, body {
   background-attachment: fixed; }
   .intro #title {
     text-transform: uppercase;
-    align-self: center;
+    -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
     font-size: 2em;
     text-align: center;
     margin: 0 auto;
@@ -62,18 +69,32 @@ html, body {
     font-family: "Roboto", sans-serif;
     font-weight: lighter; }
   .content.presentation {
-    background-color: hotpink;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column; }
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column; }
   .content.skills {
     background-color: royalblue;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex; }
     .content.skills > .large-container {
       background-color: deepskyblue;
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
       height: 100%;
       width: 100%; }
       .content.skills > .large-container > .small-container {
