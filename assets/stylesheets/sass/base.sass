@@ -6,6 +6,7 @@ html, body
     width: 100%
     font-family: "Raleway", sans-serif
     margin: 0
+    box-sizing: border-box
 
 .intro
     display: flex
@@ -20,14 +21,24 @@ html, body
         position: top center
         attachment: fixed
 
+    .overlay
+        z-index: 1
+        height: inherit
+        width: inherit
+        background-color: rgba(0, 0, 0, 0.1)
+
     #title
+        position: absolute
         text-transform: uppercase
         align-self: center
         font-size: 2em
         text-align: center
         margin: 0 auto
         letter-spacing: 4px
-        z-index: -1
+        z-index: 2
+        background-color: rgba(255, 255, 255, 0.3)
+        border: 10px solid hsla(255,255,255,0.3)
+        padding: 1em 1.5em
 
     #sub-title
         text-align: center
@@ -43,15 +54,12 @@ html, body
     margin: 0 auto
     z-index: 1
 
-    hr
-        opacity: 0.3
-    header h1
-        font-family: "Roboto", sans-serif
-        font-weight: lighter
-
     &.presentation
         display: flex
         flex-direction: column
+        color: #FE667B
+        font-family: "Raleway"
+        font-weight: light
 
     &.skills
         background-color: royalblue
