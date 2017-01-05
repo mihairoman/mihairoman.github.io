@@ -1,0 +1,30 @@
+@import flexbox
+@import main-colors
+
+.navbar
+    position: fixed
+    top: 0
+    z-index: 1
+    width: 100vw
+    line-height: 5vh
+
+    >.navbar-list
+        @include flex-row()
+        list-style: none
+        margin: 0
+        padding: 0
+        overflow: hidden
+
+        >li
+            width: 15vw
+            text-align: center
+
+            &:hover
+                cursor: pointer
+                background-color: $steelblue
+
+
+            >a
+                color: $bone
+                &:link, &:visited
+                    text-decoration: none
