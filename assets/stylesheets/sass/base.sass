@@ -1,6 +1,7 @@
 @import text-effects
 @import scrollbar
 @import menu
+@import animation
 
 html, body
     height: 100%
@@ -33,11 +34,15 @@ html, body
         text-align: center
         //margin: 0 auto
         letter-spacing: 4px
+        color: $bone
         //background-color: rgba(245,151, 19, 1)
         //width: 50vw
         //border: 10px solid rgba(254, 102, 123, 0.5)
         // /padding: 1em 1.5em
         //rgba(205, 89, 74, 0.7)
+
+        #cursor
+            animation: blink-cursor 1s linear infinite
 
 
     // #sub-title
