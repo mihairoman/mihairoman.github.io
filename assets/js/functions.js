@@ -3,7 +3,7 @@ require('../stylesheets/sass/base.sass');
 (function() {
     var model = {
         greeting_p1: "Hi there, I'm Mihai",
-        greeting_p2: "chael and I'm an amaz",
+        greeting_p2: "chael and I'm an amazi",
         greeting_p3: "ll right developer"
     };
 
@@ -21,6 +21,7 @@ require('../stylesheets/sass/base.sass');
         greetingElem: null,
 
         init: function() {
+            this.body = document.body;
             this.title = document.getElementById('title');
             this.titleCursor = document.getElementById("cursor");
             this.maxHeight = document.getElementsByClassName('intro')[0].offsetHeight;
@@ -43,22 +44,25 @@ require('../stylesheets/sass/base.sass');
 
         writeGreeting: function() {
             view.changeCursorAnimation('paused').then(() => {
-                return view.writeMessage(model.greeting_p1)
+                return view.writeMessage(model.greeting_p1, 200)
             }).then(() => {
                 return view.eraseCharactersFromEnd(3);
             }).then(() => {
-                return view.writeMessage(model.greeting_p2);
+                return view.writeMessage(model.greeting_p2, 500);
             }).then(() => {
-                return view.eraseCharactersFromEnd(3);
+                return view.eraseCharactersFromEnd(4);
             }).then(() => {
                 return view.writeMessage(model.greeting_p3);
             }).then(() => {
                 return view.changeCursorAnimation('running');
+            }).then(() => {
+                setTimeout(function() {
+                    view.body.classList.add('scrollable');
+                }, 400);
             });
-
         },
 
-        writeMessage: function(message) {
+        writeMessage: function(message, resolveDelay = 0) {
             var greetingArr = message.split(""),
                 arrLength = view.greetingLength = greetingArr.length,
                 i = 0,
@@ -71,12 +75,12 @@ require('../stylesheets/sass/base.sass');
                 }
                 Promise.all(promiseChain).then(() => {
                     //Small delay after finishing writing the message
-                    setTimeout(resolve, 200);
+                    setTimeout(resolve, resolveDelay);
                 });
             });
         },
 
-        typeCharacter: function(char, index, speed = 100) {
+        typeCharacter: function(char, index, speed = 90) {
             return new Promise(function(resolve, reject) {
                 setTimeout(function() {
                     view.greetingElem.innerHTML += char;
@@ -113,7 +117,7 @@ require('../stylesheets/sass/base.sass');
                 view.titleCursor.style.WebkitAnimationPlayState = state;
                 view.titleCursor.style.animationPlayState = state;
                 resolve();
-            })
+            });
         },
 
         /**
