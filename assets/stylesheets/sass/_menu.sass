@@ -8,8 +8,6 @@
     z-index: 1
     width: 100vw
     line-height: 5vh
-    //background-color: $nectar
-    //box-shadow: 0px 1px 3px #924a48
     font-family: 'Raleway', sans-serif
     font-size: 1em
 
@@ -22,25 +20,27 @@
         padding-bottom: 5px
 
         >li
-            width: 15vw
+            //width: 15vw
             text-align: center
+            margin-top: -100px
+            transition: margin 0.7s ease
+
+            @media screen and (max-width: $break-small)
+                font-size: 0.8em
+                text-align: justify
 
             >a
-                color: rgba(146, 74, 72, 0.64)
+                color: white
                 letter-spacing: 0.2em
                 text-transform: uppercase
                 padding-bottom: 6px
-                //text-shadow: 0px 1px 1px #562322
 
                 &:link, &:visited
                     text-decoration: none
 
-                &:hover, &:active, &:focus
+                &:hover
+                    @extend .selected-menu-item
                     cursor: pointer
-                    font-weight: bolder
-
-                    &::after, &::before
-                        @extend %selected-menu-item
 
                 &::after, &::before
                     display: inline-block

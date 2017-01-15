@@ -23,9 +23,11 @@ require('../stylesheets/sass/base.sass');
         init: function() {
             this.body = document.body;
             this.title = document.getElementById('title');
+            this.home = document.getElementById('home');
             this.titleCursor = document.getElementById("cursor");
             this.maxHeight = document.getElementsByClassName('intro')[0].offsetHeight;
             this.greetingElem = document.getElementById('greeting');
+            this.navbar = document.getElementsByClassName('navbar-list')[0];
             this.initListeners();
         },
 
@@ -56,9 +58,10 @@ require('../stylesheets/sass/base.sass');
             }).then(() => {
                 return view.changeCursorAnimation('running');
             }).then(() => {
+                setTimeout(view.displayMenu, 200);
                 setTimeout(function() {
-                    view.body.classList.add('scrollable');
-                }, 400);
+                    view.home.classList.add('minified-section');
+                }, 200)
             });
         },
 
@@ -118,6 +121,18 @@ require('../stylesheets/sass/base.sass');
                 view.titleCursor.style.animationPlayState = state;
                 resolve();
             });
+        },
+
+        displayMenu: function() {
+            var listElems = view.navbar.children,
+                i = 0;
+            for (i; i < listElems.length; i++) {
+                (function(elem, index) {
+                    setTimeout(function() {
+                        elem.classList.add('visible-menu-item');
+                    }, 100 * (index * 3));
+                })(listElems[i], i);
+            }
         },
 
         /**

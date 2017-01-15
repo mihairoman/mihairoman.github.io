@@ -12,20 +12,24 @@ html
 
     body
         @extend %default_html_body
-        overflow: hidden
+        overflow-y: auto
 
 *
     &::after, &::before
-        box-sizing: border-box  
+        box-sizing: border-box
 
-.intro
+#home
     display: flex
     flex-direction: column
     justify-content: center
     align-items: center
     position: relative
     height: 100vh
-    background: $gradient-main
+    background-color: #ce5a57
+    color: white
+    transition: height 1s ease
+
+    //animation: bg-color-change 6s linear 0s infinite alternate running
         // size: cover
         // //image: url(../../img/tam.jpg)
         // color: $peach
@@ -35,22 +39,24 @@ html
     #title
         font-size: 3em
         text-align: center
-        color: rgba(146, 74, 72, 0.64)
-        //width: 0
         font-family: 'Titillium Web', sans-serif
 
         @media screen and (max-width: $break-small)
             text-align: left
+            font-size: 2em
+            padding-left: 15px
+
+        @media screen and (max-width: $break-medium) and (orientation: landscape)
+            text-align: center
+            font-size: 2em
+            padding-left: 0
+
+
+        #greeting
+            transition: all 1s linear
 
         #cursor
             animation: blink-cursor 0.8s linear infinite
-
-
-    // #sub-title
-    //     text-align: center
-    //     color: white
-    //     text-shadow: 2px 1px 2px #333
-    //     letter-spacing: 0.5px
 
 .content
     height: 70vh
