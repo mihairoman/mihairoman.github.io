@@ -5,35 +5,41 @@
 .navbar
     position: fixed
     top: 0
-    z-index: 1
+    z-index: 1000
     width: 100vw
-    line-height: 5vh
+    height: 5vh
     font-family: 'Raleway', sans-serif
     font-size: 1em
 
+    @media screen and(min-width: $break-large)
+        font-size: 1.2em !important
+
     >.navbar-list
         @include flex-row()
+        height: inherit
         list-style: none
         margin: 0
         padding: 0
         overflow: hidden
-        padding-bottom: 5px
 
         >li
             //width: 15vw
             text-align: center
             margin-top: -100px
-            transition: margin 0.7s ease
+            transition: margin 0.5s ease
+            margin-left: 20px
+            margin-right: 20px
 
             @media screen and (max-width: $break-small)
                 font-size: 0.8em
                 text-align: justify
+                margin-left: 0px
+                margin-right: 0px
 
             >a
-                color: white
+                color: $shadow
                 letter-spacing: 0.2em
                 text-transform: uppercase
-                padding-bottom: 6px
 
                 &:link, &:visited
                     text-decoration: none

@@ -16,25 +16,62 @@
             <ul class="navbar-list">
                 <li><a href="#home">home</a></li>
                 <li><a href="#about">about</a></li>
-                <li><a href="#portfolio">skills</a></li>
+                <li><a href="#experience">experience</a></li>
                 <li><a href="#contact">contact</a></li>
             </ul>
         </nav>
+        <div class="holder-navigation">
+            <ul id="navigation" class="navigation">
+                <li class="nav-item">
+                    <a href="#home" style=""></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" style=""></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#experience" style=""></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" style=""></a>
+                </li>
+            </ul>
+        </div>
         <section class="intro" id="home">
+            <div class="shape">
+                <svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                 <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+                     <g>
+                          <title>Layer 1</title>
+                          <path id="svg_1" d="m380.00002,135l-218.75002,72l16.5,174l210.75,68.25l80.25,-193.5l-88.74998,-120.75z" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="" fill="#e05858"/>
+                     </g>
+                </svg>
+            </div>
+            <div class="shape">
+                <svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+                     <g>
+                          <title>Layer 1</title>
+                          <path id="svg_5" d="m-3.24998,430.5l117.99998,-56.25l168.75,6.75l60.75,27.75l-62.25,62.25l-117,-30.75c0,0 -100.74998,45.75001 -100.74998,48.75001c0,3 -67.5,-58.5 -67.5,-58.5z" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#ff1919" fill="#aad4ff"/>
+                     </g>
+                </svg>
+            </div>
             <div id="title">
                 <span id="greeting"></span><span id="cursor">|</span>
             </div>
         </section>
-        <section class="content presentation">
-            <h2>About myself</h2>
-            <figure class="face">
-                <img src="img/face.png">
-            </figure>
-            <p>
-                <strong>Hello World.</strong> I am a Computer Science graduate of the Technical University of Cluj-Napoca I don't take myself too seriously but I do take seriously my work and my goals.
-            </p>
+        <section class="content" id="about">
+            <div class="wrapper">
+                <figure class="face">
+                    <img src="img/face.png">
+                </figure>
+            </div>
+            <div class="wrapper">
+                <p>
+                    <strong>Hello World.</strong> I am a Computer Science graduate of the Technical University of Cluj-Napoca I don't take myself too seriously but I do take seriously my work and my goals.
+                </p>
+            </div>
         </section>
-        <section class="content skills">
+        <section class="content" id="experience">
             <div class="large-container">
                 <div class="small-container">
 
@@ -47,10 +84,7 @@
                 </div>
             </div>
         </section>
-        <section class="content testimonies">
-
-        </section>
-        <section class="content contact">
+        <section class="content" id="contact">
 
         </section>
         <script src='../dist/bundle.js'></script>

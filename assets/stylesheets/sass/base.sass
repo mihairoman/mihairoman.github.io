@@ -25,9 +25,21 @@ html
     align-items: center
     position: relative
     height: 100vh
-    background-color: #ce5a57
-    color: white
+    background-color: white
+    //background-image: url(../../img/bg7.png)
+    color: $shadow
+    z-index: -1
+    position: relative
     transition: height 1s ease
+
+    &.shape
+        position: absolute
+        top: 50%
+        right: -12%
+        z-index: 1
+        width: 100%
+        max-width: 800px
+        min-width: auto
 
     //animation: bg-color-change 6s linear 0s infinite alternate running
         // size: cover
@@ -37,6 +49,8 @@ html
         // attachment: fixed
 
     #title
+        position: absolute
+        width: 100%
         font-size: 3em
         text-align: center
         font-family: 'Titillium Web', sans-serif
@@ -53,46 +67,91 @@ html
 
 
         #greeting
-            transition: all 1s linear
-
+            transition: all 0.3s ease
+            width: 90vw
+            display: inline
         #cursor
+            width: 10vw
             animation: blink-cursor 0.8s linear infinite
+            display: inline
 
 .content
-    height: 70vh
-    padding: 50px 0
-    max-width: 80vw
+    padding: 0
     text-align: center
     margin: 0 auto
-    z-index: 1
+    height: 70vh
+    width: 100vw
 
-    &.presentation
+#skills
+    background-color: royalblue
+    display: flex
+
+    >.large-container
+        background-color: deepskyblue
         display: flex
-        flex-direction: column
-        color: #FE667B
-        font-family: "Raleway"
-        font-weight: light
+        flex-direction: row
+        justify-content: space-around
+        align-items: center
+        height: 100%
+        width: 100%
 
-    &.skills
-        background-color: royalblue
-        display: flex
+        >.small-container
+            background-color: yellow
+            width: 200px
+            height: 250px
 
-        >.large-container
-            background-color: deepskyblue
-            display: flex
-            flex-direction: row
-            justify-content: space-around
-            align-items: center
-            height: 100%
-            width: 100%
+#contact
+    background-color: #333
 
-            >.small-container
-                background-color: yellow
-                width: 200px
-                height: 250px
+#about
+    display: flex
+    flex-direction: column
+    color: #FE667B
+    font-family: "Raleway"
+    font-weight: light
+    z-index: 10
+    width: 100vw
+    height: 80vh
+    // background-color: #B3DBc0
+    // background-image: url(../../img/bg4.png)
+    margin: 0 0
+    position: relative
 
-    &.testimonies
-        background-color: violet
+    >.wrapper
+        width: 60%
+        height: 90%
+        background-color: #fdede5
+        opacity: 0
+        margin-left: auto
+        margin-right: auto
+        transition: margin 1s ease, opacity 1s ease
+        box-shadow: 0px 0px 6px 0px #727077
 
-    &.contact
-        background-color: #333
+.holder-navigation
+    position: fixed
+    right: 5vw
+    height: 100%
+    z-index: 9000
+
+    & ul.navigation
+        position: absolute
+        top: 42%
+        //transform: translateY(-50%)
+        list-style: none
+        padding: 10px
+
+        & .nav-item
+            margin-bottom: 30px
+            cursor: pointer
+
+            & a
+                transform-origin: center center
+                display: inline-block
+                width: 20px
+                height: 20px
+                border: 3px solid #e05858
+                background-color: transparent
+                border-radius: 50%
+                transition: all .5s
+                transform: scaleX(0.5) scaleY(0.5)
+                outline: none

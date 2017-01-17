@@ -1,9 +1,10 @@
 require('../index.html');
 require('../stylesheets/sass/base.sass');
+require('smoothscroll-polyfill').polyfill();
 (function() {
     var model = {
-        greeting_p1: "Hi there, I'm Mihai",
-        greeting_p2: "chael and I'm an amazi",
+        greeting_p1: "Hi there, I'm Michael. ",
+        greeting_p2: "I'm an aweso",
         greeting_p3: "ll right developer"
     };
 
@@ -24,6 +25,8 @@ require('../stylesheets/sass/base.sass');
             this.body = document.body;
             this.title = document.getElementById('title');
             this.home = document.getElementById('home');
+            this.about = document.getElementById('about');
+            this.aboutWrapper = document.getElementsByClassName('wrapper')[0];
             this.titleCursor = document.getElementById("cursor");
             this.maxHeight = document.getElementsByClassName('intro')[0].offsetHeight;
             this.greetingElem = document.getElementById('greeting');
@@ -32,25 +35,26 @@ require('../stylesheets/sass/base.sass');
         },
 
         initListeners: function() {
+            window.onbeforeunload = function(event) {
+                window.scrollTo(0, 0);
+            };
             addEventListener('DOMContentLoaded', function(event) {
                 view.writeGreeting();
             });
-
-            // addEventListener("scroll", function(event) {
-            //     view.topDistance = scrollY;
-            //     if (view.topDistance < view.maxHeight) {
-            //         view.requestTick(view.parallaxTitle);
-            //     }
-            // });
+            addEventListener("scroll", function(event) {
+                // view.topDistance = scrollY;
+                // if (view.topDistance < view.maxHeight) {
+                //     view.requestTick(view.parallaxTitle);
+                // }
+            });
         },
 
         writeGreeting: function() {
+            view.body.classList.add('not-scrollable');
             view.changeCursorAnimation('paused').then(() => {
-                return view.writeMessage(model.greeting_p1, 200)
+                return view.writeMessage(model.greeting_p1, 300)
             }).then(() => {
-                return view.eraseCharactersFromEnd(3);
-            }).then(() => {
-                return view.writeMessage(model.greeting_p2, 500);
+                return view.writeMessage(model.greeting_p2, 600);
             }).then(() => {
                 return view.eraseCharactersFromEnd(4);
             }).then(() => {
@@ -58,10 +62,14 @@ require('../stylesheets/sass/base.sass');
             }).then(() => {
                 return view.changeCursorAnimation('running');
             }).then(() => {
-                setTimeout(view.displayMenu, 200);
                 setTimeout(function() {
+                    view.displayMenu();
                     view.home.classList.add('minified-section');
-                }, 200)
+                    view.body.classList.remove('not-scrollable');
+                    setTimeout(function() {
+                        view.aboutWrapper.classList.add('overlap');
+                    }, 550);
+                }, 200);
             });
         },
 
@@ -83,7 +91,7 @@ require('../stylesheets/sass/base.sass');
             });
         },
 
-        typeCharacter: function(char, index, speed = 90) {
+        typeCharacter: function(char, index, speed = 70) {
             return new Promise(function(resolve, reject) {
                 setTimeout(function() {
                     view.greetingElem.innerHTML += char;
