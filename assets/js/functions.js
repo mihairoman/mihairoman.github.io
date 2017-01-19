@@ -1,87 +1,92 @@
 require('../index.html');
 require('../stylesheets/sass/base.sass');
 require('smoothscroll-polyfill').polyfill();
-(function() {
-    var model = {
-        greeting_p1: "Hi there, I'm Michael. ",
-        greeting_p2: "I'm an aweso",
-        greeting_p3: "ll right developer"
+(function(w, doc) {
+    let model = {
+        header: "an introductory haiku",
+        verse1: "greetings, Michael here",
+        verse2_1: "an awesom",
+        verse2_2: "ll right developer",
+        verse3: "let's build together"
     };
 
-    var controller = {
+    let controller = {
         init: function() {
             view.init();
         }
     };
 
-    var view = {
+    let view = {
         topDistance: 0,
         maxHeight: 0,
         title: null,
         ticking: false,
+        delay: false,
         greetingElem: null,
 
         init: function() {
-            this.body = document.body;
-            this.title = document.getElementById('title');
-            this.home = document.getElementById('home');
-            this.about = document.getElementById('about');
-            this.aboutWrapper = document.getElementsByClassName('wrapper')[0];
-            this.titleCursor = document.getElementById("cursor");
-            this.maxHeight = document.getElementsByClassName('intro')[0].offsetHeight;
-            this.greetingElem = document.getElementById('greeting');
-            this.navbar = document.getElementsByClassName('navbar-list')[0];
-            this.initListeners();
+            this.body = doc.body;
+            this.title = doc.getElementById('title');
+            this.home = doc.getElementById('home');
+            this.about = doc.getElementById('about');
+            this.aboutWrapper = doc.getElementsByClassName('wrapper')[0];
+            this.titleCursor = doc.getElementById("cursor");
+            this.maxHeight = doc.getElementById('home').offsetHeight;
+            this.greetingElem = doc.getElementById('greeting');
+            this.navbar = doc.getElementsByClassName('navbar-list')[0];
+            this.initEventListeners();
         },
 
-        initListeners: function() {
-            window.onbeforeunload = function(event) {
-                window.scrollTo(0, 0);
+        initEventListeners: function() {
+            w.onbeforeunload = function(event) {
+                w.scrollTo(0, 0);
             };
-            addEventListener('DOMContentLoaded', function(event) {
-                view.writeGreeting();
+            w.addEventListener('DOMContentLoaded', function(event) {
+                setTimeout(view.writeGreeting, 300);
             });
-            addEventListener("scroll", function(event) {
+            w.addEventListener("scroll", function(event) {
                 // view.topDistance = scrollY;
                 // if (view.topDistance < view.maxHeight) {
                 //     view.requestTick(view.parallaxTitle);
                 // }
             });
+            view.initNavigationClickListeners();
         },
 
         writeGreeting: function() {
             view.body.classList.add('not-scrollable');
-            view.changeCursorAnimation('paused').then(() => {
-                return view.writeMessage(model.greeting_p1, 300)
+            let elem = doc.querySelector('#haiku>header'),
+                versesArr = doc.querySelectorAll('.poem>.verse');
+
+            view.writeMessage(elem, model.header, 65, 750).then(() => {
+                return view.writeMessage(versesArr[0], model.verse1, 65, 550);
             }).then(() => {
-                return view.writeMessage(model.greeting_p2, 600);
+                return view.writeMessage(versesArr[1], model.verse2_1, 65, 450);
             }).then(() => {
-                return view.eraseCharactersFromEnd(4);
+                return view.eraseCharactersFromEnd(versesArr[1], 5, 65);
             }).then(() => {
-                return view.writeMessage(model.greeting_p3);
+                return view.writeMessage(versesArr[1], model.verse2_2, 65, 550);
             }).then(() => {
-                return view.changeCursorAnimation('running');
+                return view.writeMessage(versesArr[2], model.verse3, 65, 200);
             }).then(() => {
                 setTimeout(function() {
-                    view.displayMenu();
-                    view.home.classList.add('minified-section');
                     view.body.classList.remove('not-scrollable');
-                    setTimeout(function() {
-                        view.aboutWrapper.classList.add('overlap');
-                    }, 550);
                 }, 200);
             });
         },
 
-        writeMessage: function(message, resolveDelay = 0) {
-            var greetingArr = message.split(""),
+        writeMessage: function(element, message, speed = 80, resolveDelay = 0) {
+            if (!element) {
+                return;
+            }
+            let greetingArr = message.split(""),
                 arrLength = view.greetingLength = greetingArr.length,
                 i = 0,
                 promiseChain = [];
 
             return new Promise(function(resolve, reject) {
                 for (i; i < arrLength; i++) {
-                    var prom = view.typeCharacter(greetingArr[i], i);
+                    let prom = view.typeCharacter(element, greetingArr[i], i, speed);
                     promiseChain.push(prom);
                 }
                 Promise.all(promiseChain).then(() => {
@@ -91,33 +96,33 @@ require('smoothscroll-polyfill').polyfill();
             });
         },
 
-        typeCharacter: function(char, index, speed = 70) {
+        typeCharacter: function(element, char, index, speed) {
             return new Promise(function(resolve, reject) {
                 setTimeout(function() {
-                    view.greetingElem.innerHTML += char;
+                    element.innerHTML += char;
                     resolve();
                 }, index * speed);
             });
         },
 
-        eraseCharactersFromEnd: function(nrOfChars) {
-            var i = 0,
-                msgLength = view.greetingElem.innerHTML.length,
+        eraseCharactersFromEnd: function(element, nrOfChars, speed = 100) {
+            let i = 0,
+                msgLength = element.innerHTML.length,
                 promChain = [];
 
             return new Promise(function(resolve, reject) {
                 for (i; i < nrOfChars; i++) {
-                    var prom = view.eraseCharacter(--msgLength, i);
+                    let prom = view.eraseCharacter(element, --msgLength, i, speed);
                     promChain.push(prom);
                 }
                 Promise.all(promChain).then(resolve);
             });
         },
 
-        eraseCharacter: function(msgLength, index, speed = 110) {
+        eraseCharacter: function(element, msgLength, index, speed) {
             return new Promise(function(resolve, reject) {
                 setTimeout(function() {
-                    view.greetingElem.innerHTML = view.greetingElem.innerHTML.substr(0, msgLength);
+                    element.innerHTML = element.innerHTML.substr(0, msgLength);
                     resolve();
                 }, index * speed);
             });
@@ -132,7 +137,7 @@ require('smoothscroll-polyfill').polyfill();
         },
 
         displayMenu: function() {
-            var listElems = view.navbar.children,
+            let listElems = view.navbar.children,
                 i = 0;
             for (i; i < listElems.length; i++) {
                 (function(elem, index) {
@@ -163,8 +168,112 @@ require('smoothscroll-polyfill').polyfill();
                 requestAnimationFrame(updateFunc);
             }
             view.ticking = true;
+        },
+
+
+        initNavigationClickListeners: function() {
+            //.wrapper-vertical-nav>ul>li>a'
+            let navElems = doc.querySelectorAll('nav>ul>li>a'),
+                i = 0,
+                length = navElems.length;
+            for (i; i < length; i++) {
+                let elem = navElems[i];
+                elem.onclick = function(event) {
+                    event.preventDefault();
+                    let to = elem.getAttribute('href');
+                    view.updateSelectedNavItem(elem, to);
+                    doc.querySelector(to).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    //view.changeURLHash(to);
+                };
+            }
+        },
+
+        // initCustomScroll: function() {
+        //     view.topDistance = w.pageYOffset || w.scrollTop;
+        //     w.scroll = w.onmousewheel = w.onwheel = function(event) {
+        //         let st = w.pageYOffset || doc.documentElement.scrollTop;
+        //         if (st > view.topDistance) {
+        //             //donwscroll code
+        //             let currentNavItem = doc.querySelector('nav>ul>.selected-nav-item'),
+        //                 nextNavItem = currentNavItem.nextElementSibling;
+        //             if (nextNavItem) {
+        //                 let anchorElem = nextNavItem.getElementsByTagName('a')[0],
+        //                     nextLocation = anchorElem.getAttribute('href');
+        //                 view.updateSelectedNavItem(nextNavItem, nextLocation);
+        //                 view.ticking = false;
+        //                 view.requestTick(function() {
+        //                     doc.querySelector(nextLocation).scrollIntoView({
+        //                         behavior: 'smooth'
+        //                     });
+        //                 });
+        //             }
+        //         } else {
+        //             // upscroll code
+        //             let currentNavItem = doc.querySelector('nav>ul>.selected-nav-item'),
+        //                 prevNavItem = currentNavItem.previousElementSibling;
+        //             if (prevNavItem) {
+        //                 let anchorElem = prevNavItem.getElementsByTagName('a')[0],
+        //                     nextLocation = anchorElem.getAttribute('href');
+        //                 view.updateSelectedNavItem(prevNavItem, nextLocation);
+        //                 view.ticking = false;
+        //                 view.requestTick(function() {
+        //                     doc.querySelector(nextLocation).scrollIntoView({
+        //                         behavior: 'instant'
+        //                     });
+        //                 });
+        //             }
+        //         }
+        //         view.topDistance = st;
+        //     };
+        // },
+
+        updateSelectedNavItem: function(newElem, newLocation) {
+            // doc.querySelector('nav>ul>.selected-nav-item').classList.remove('selected-nav-item');
+            // if (newElem.tagName === 'LI') {
+            //     newElem.classList.add('selected-nav-item');
+            // } else {
+            //     newElem.parentElement.classList.add('selected-nav-item');
+            // }
+            view.changeURLHash(newLocation);
+        },
+
+        changeURLHash: function(newHash) {
+            if (history.pushState) {
+                w.history.pushState(null, null, `${newHash}`);
+            } else {
+                location.hash = newHash;
+            }
         }
     };
 
     controller.init();
-})();
+})(window, document);
+
+//view.initCustomScroll();
+//     w.onmousewheel = w.onwheel = function(event) {
+//         view.topDistance = scrollY;
+//         event.preventDefault();
+//         if (view.delay) {
+//             return
+//         };
+//         view.delay = true;
+//         setTimeout(function() {
+//             view.delay = false
+//         }, 200);
+//         let wd = event.wheelDelta || -event.detail;
+//         let content = doc.getElementsByClassName('content');
+//         if (wd < 0) {
+//             for (let i = 0; i < content.length; i++) {
+//                 let t = content[i].getClientRects()[0].top;
+//                 if (t >= 40) break;
+//             }
+//         } else {
+//             for (let i = content.length - 1; i >= 0; i--) {
+//                 let t = content[i].getClientRects()[0].top;
+//                 if (t < -20) break;
+//             }
+//         }
+//         //view.requestTick();
+//     };

@@ -31,15 +31,7 @@ html
     z-index: -1
     position: relative
     transition: height 1s ease
-
-    &.shape
-        position: absolute
-        top: 50%
-        right: -12%
-        z-index: 1
-        width: 100%
-        max-width: 800px
-        min-width: auto
+    font-family: 'Raleway', sans-serif
 
     //animation: bg-color-change 6s linear 0s infinite alternate running
         // size: cover
@@ -48,32 +40,58 @@ html
         // position: top center
         // attachment: fixed
 
-    #title
-        position: absolute
+    #haiku
         width: 100%
-        font-size: 3em
-        text-align: center
-        font-family: 'Titillium Web', sans-serif
+        text-align: left
+        letter-spacing: 0.2em
+        padding-left: 5vw
+        text-align: left
+        align-self: flex-start
+        height: 20vh
+        transition: 0.3s ease
 
-        @media screen and (max-width: $break-small)
-            text-align: left
-            font-size: 2em
-            padding-left: 15px
+        &>header
+            display: block
+            font-size: 1.30em
+            //font-size: 1.5em
+            font-family: 'Source Sans Pro', sans-serif
+            font-weight: 300
+            letter-spacing: 0.15em
+            text-transform: lowercase
+            color: #ff5252
+            margin: 0.5vh 0
+            text-shadow: 0px 1px 2px rgba(255, 82, 82, 0.52)
 
-        @media screen and (max-width: $break-medium) and (orientation: landscape)
-            text-align: center
-            font-size: 2em
-            padding-left: 0
+        &>.poem
+            font-family: 'Raleway'
+            color: #727077
+            font-size: 0.90em
+            //font-size: 1em
+            letter-spacing: 0.13em
+
+            &>.verse
+                display: block
+                line-height: 1.55em
+
+        // @media screen and (max-width: $break-small)
+        //     text-align: left
+        //     font-size: 2em
+        //     padding-left: 15px
+        //
+        // @media screen and (max-width: $break-medium) and (orientation: landscape)
+        //     text-align: center
+        //     font-size: 2em
+        //     padding-left: 0
 
 
-        #greeting
-            transition: all 0.3s ease
-            width: 90vw
-            display: inline
-        #cursor
-            width: 10vw
-            animation: blink-cursor 0.8s linear infinite
-            display: inline
+        // #greeting
+        //     transition: all 0.3s ease
+        //     width: 90vw
+        //     display: inline
+        // #cursor
+        //     width: 10vw
+        //     animation: blink-cursor 0.8s linear infinite
+        //     display: inline
 
 .content
     padding: 0
@@ -127,20 +145,20 @@ html
         transition: margin 1s ease, opacity 1s ease
         box-shadow: 0px 0px 6px 0px #727077
 
-.holder-navigation
+.wrapper-vertical-nav
     position: fixed
     right: 5vw
     height: 100%
     z-index: 9000
 
-    & ul.navigation
+    & ul.vertical-nav
         position: absolute
         top: 42%
         //transform: translateY(-50%)
         list-style: none
         padding: 10px
 
-        & .nav-item
+        & .vertical-nav-item
             margin-bottom: 30px
             cursor: pointer
 

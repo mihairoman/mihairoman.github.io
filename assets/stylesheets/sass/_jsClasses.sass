@@ -2,10 +2,11 @@
 .not-scrollable
     overflow-y: hidden
 
-.selected-menu-item
+.selected-nav-item
     &::after, &::before
-        opacity: 1
-        transform: translateX(0px)
+        transition: transform 0s, opacity 0s !important
+        opacity: 1 !important
+        transform: translateX(0px) !important
 
 .visible-menu-item
     margin-top: 0 !important
