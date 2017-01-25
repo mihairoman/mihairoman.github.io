@@ -3,11 +3,12 @@ require('../stylesheets/sass/base.sass');
 require('smoothscroll-polyfill').polyfill();
 (function(w, doc) {
     let model = {
-        header: "an introductory haiku",
-        verse1: "greetings, Michael here",
-        verse2_1: "an awesom",
-        verse2_2: "ll right developer",
-        verse3: "let's build together"
+        header: "greetings",
+        line1: "Michael here",
+        line2_1: "an awesom",
+        line2_2: "ll right ",
+        line2_3: "web developer",
+        line3: "let's create something together"
     };
 
     let controller = {
@@ -23,6 +24,7 @@ require('smoothscroll-polyfill').polyfill();
         ticking: false,
         delay: false,
         greetingElem: null,
+        currentHash: '#home',
 
         init: function() {
             this.body = doc.body;
@@ -30,10 +32,12 @@ require('smoothscroll-polyfill').polyfill();
             this.home = doc.getElementById('home');
             this.about = doc.getElementById('about');
             this.aboutWrapper = doc.getElementsByClassName('wrapper')[0];
-            this.titleCursor = doc.getElementById("cursor");
             this.maxHeight = doc.getElementById('home').offsetHeight;
             this.greetingElem = doc.getElementById('greeting');
             this.navbar = doc.getElementsByClassName('navbar-list')[0];
+            this.navIcon = document.getElementById('nav-icon');
+            this.sections = document.getElementsByClassName('content');
+            this.menuMin = doc.querySelector('.menu-min-wrapper');
             this.initEventListeners();
         },
 
@@ -50,32 +54,48 @@ require('smoothscroll-polyfill').polyfill();
                 //     view.requestTick(view.parallaxTitle);
                 // }
             });
+            view.navIcon.addEventListener('click', function() {
+                let classes = view.navIcon.classList;
+                if (classes.contains('open')) {
+                    classes.remove('open');
+                    doc.querySelector(w.location.hash).classList.remove('blured');
+                    view.menuMin.classList.remove('collapsed');
+                } else {
+                    classes.add('open');
+                    doc.querySelector(w.location.hash).classList.add('blured');
+                    view.menuMin.classList.add('collapsed');
+                }
+            });
             view.initNavigationClickListeners();
         },
 
         writeGreeting: function() {
             view.body.classList.add('not-scrollable');
-            let elem = doc.querySelector('#haiku>header'),
-                versesArr = doc.querySelectorAll('.poem>.verse');
+            let textArr = doc.querySelectorAll('#greeting>.text>.line'),
+                highlight = doc.querySelector('.line-composed + .highlight');
 
-            view.writeMessage(elem, model.header, 65, 750).then(() => {
-                return view.writeMessage(versesArr[0], model.verse1, 65, 550);
+            view.writeMessage(textArr[0], model.header, 55, 450).then(() => {
+                return view.writeMessage(textArr[1], model.line1, 55, 250);
             }).then(() => {
-                return view.writeMessage(versesArr[1], model.verse2_1, 65, 450);
+                return view.writeMessage(textArr[2], model.line2_1, 55, 350);
             }).then(() => {
-                return view.eraseCharactersFromEnd(versesArr[1], 5, 65);
+                return view.eraseCharactersFromEnd(textArr[2], 5, 55);
             }).then(() => {
-                return view.writeMessage(versesArr[1], model.verse2_2, 65, 550);
+                return view.writeMessage(textArr[2], model.line2_2, 55, 250);
             }).then(() => {
-                return view.writeMessage(versesArr[2], model.verse3, 65, 200);
+                return view.writeMessage(highlight, model.line2_3, 55, 250);
+            }).then(() => {
+                return view.writeMessage(textArr[3], model.line3, 55, 200);
             }).then(() => {
                 setTimeout(function() {
                     view.body.classList.remove('not-scrollable');
                 }, 200);
+                doc.querySelector('.arrow-down').classList.add('fadeInUp');
+                view.navIcon.classList.add('fadeInLeft');
             });
         },
 
-        writeMessage: function(element, message, speed = 80, resolveDelay = 0) {
+        writeMessage: function(element, message, speed = 60, resolveDelay = 0) {
             if (!element) {
                 return;
             }
@@ -245,6 +265,7 @@ require('smoothscroll-polyfill').polyfill();
             } else {
                 location.hash = newHash;
             }
+            view.currentHash = newHash;
         }
     };
 

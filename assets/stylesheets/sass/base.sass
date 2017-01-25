@@ -3,16 +3,18 @@
 @import placeholders
 @import text-effects
 @import scrollbar
-@import menu
+@import navigation
 @import animation
 @import jsClasses
 
 html
-    @extend %default_html_body
+    @extend %html_body_defaults
 
     body
-        @extend %default_html_body
+        @extend %html_body_defaults
+        @include font-smoothing(on)
         overflow-y: auto
+
 
 *
     &::after, &::before
@@ -28,7 +30,6 @@ html
     background-color: white
     //background-image: url(../../img/bg7.png)
     color: $shadow
-    z-index: -1
     position: relative
     transition: height 1s ease
     font-family: 'Raleway', sans-serif
@@ -40,7 +41,7 @@ html
         // position: top center
         // attachment: fixed
 
-    #haiku
+    #greeting
         width: 100%
         text-align: left
         letter-spacing: 0.2em
@@ -50,28 +51,50 @@ html
         height: 20vh
         transition: 0.3s ease
 
-        &>header
+        & h3
+            @extend %highlight
             display: block
-            font-size: 1.30em
+            font-size: 1em
             //font-size: 1.5em
-            font-family: 'Source Sans Pro', sans-serif
+            // font-family: 'Source Sans Pro', sans-serif
             font-weight: 300
-            letter-spacing: 0.15em
+            letter-spacing: 0.13em
             text-transform: lowercase
-            color: #ff5252
-            margin: 0.5vh 0
-            text-shadow: 0px 1px 2px rgba(255, 82, 82, 0.52)
+            margin: 0.7vh 0
 
-        &>.poem
+        & .text
             font-family: 'Raleway'
-            color: #727077
-            font-size: 0.90em
-            //font-size: 1em
+            color: $shadow
+            font-size: 1em
             letter-spacing: 0.13em
 
-            &>.verse
+            & .line
                 display: block
                 line-height: 1.55em
+
+            & .line-composed
+                display: inline-block !important
+
+            & .highlight
+                @extend %highlight
+
+    & a.arrow-down
+        text-decoration: none
+        position: absolute
+        bottom: -5vh
+        opacity: 0
+        transition: all 1s ease
+
+        &.fadeInUp
+            bottom: 10vh
+            opacity: 1
+
+        &:hover
+            cursor: pointer
+
+        &>i
+            color: rgba(255, 82, 82, 0.25)
+            // color: rgba(114, 112, 119, 0.28)
 
         // @media screen and (max-width: $break-small)
         //     text-align: left
@@ -94,56 +117,69 @@ html
         //     display: inline
 
 .content
-    padding: 0
-    text-align: center
-    margin: 0 auto
-    height: 70vh
+    color: $shadow
+    height: 100vh
     width: 100vw
+    position: relative
 
-#skills
-    background-color: royalblue
-    display: flex
+    &.blured
+        filter: blur(4px)
 
-    >.large-container
-        background-color: deepskyblue
-        display: flex
-        flex-direction: row
-        justify-content: space-around
-        align-items: center
-        height: 100%
-        width: 100%
+    & span.word-large
+        color: rgba(255, 82, 82, 1)
+        max-width: 100vw
+        font-family: 'Source Sans Pro', sans-serif
+        font-weight: 900
+        font-size: 7em
+        position: absolute
+        top: 0
+        left: 0
+        line-height: 0.75em
+        opacity: 0.07
 
-        >.small-container
-            background-color: yellow
-            width: 200px
-            height: 250px
+#experience
+
+    & span.word-large
+        transform: rotate(90deg) translate(40%, 170%)
 
 #contact
     background-color: #333
 
 #about
-    display: flex
-    flex-direction: column
-    color: #FE667B
-    font-family: "Raleway"
-    font-weight: light
     z-index: 10
     width: 100vw
-    height: 80vh
-    // background-color: #B3DBc0
-    // background-image: url(../../img/bg4.png)
-    margin: 0 0
-    position: relative
+    height: 100vh
 
-    >.wrapper
-        width: 60%
-        height: 90%
-        background-color: #fdede5
-        opacity: 0
-        margin-left: auto
-        margin-right: auto
-        transition: margin 1s ease, opacity 1s ease
-        box-shadow: 0px 0px 6px 0px #727077
+    .word-large
+        transform: rotate(90deg) translate(60%,130%)
+        font-size: 10em
+
+    & .text-wrapper
+        @include flex('column', 'space-around')
+        height: 100%
+        width: 100%
+
+        & h3
+            // color: #F25B44
+            color: #ff6c6c
+            letter-spacing: 0.07em
+
+        & .detail
+            font-size: 1.1em
+            font-family: 'Arsenal'
+            text-align: justify
+            padding: 0 8vh
+            letter-spacing: 0.03em
+
+            & span
+                @extend %highlight
+
+        // & .tldr
+        //     font-size: 5em
+        //     font-weight: bold
+        //     align-self: center
+        //     color: #ff6c6c
+        //     text-shadow: 1px 1px 2px rgba(114, 112, 119, 0.8)
 
 .wrapper-vertical-nav
     position: fixed
@@ -173,3 +209,39 @@ html
                 transition: all .5s
                 transform: scaleX(0.5) scaleY(0.5)
                 outline: none
+
+
+.flat-button
+    @include flex('column', 'center')
+    width: 10vw
+    height: 9vw
+    min-height: 50px
+    max-width: 260px
+    padding: 0
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25)
+    background: #ff6c6c
+    border: 0
+    border-bottom: 4px solid #e05858
+    cursor: pointer
+    box-shadow: inset 0 -2px #e05858
+    transform: translateY(0)
+    transition: all 0.25s ease
+
+    &:active
+        transform: translateY(2px)
+        outline: none
+        box-shadow: none
+    &>a
+        color: white
+        font-family: 'Arsenal',sans-serif
+        font-weight: bold
+        font-size: calc(#{$font-btn-min} + (#{$font-btn-max} - #{$font-btn-min})*(100vw - #{$min-screen-width})/(#{$max-screen-width} - #{$min-screen-width}))
+        line-height: 5vw
+
+    @media screen and (min-width: $break-medium)
+         max-width: 230px
+         max-height: 70px
+
+         &>a
+             line-height: 5vw
+             font-size: 5vw

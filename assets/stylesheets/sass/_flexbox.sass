@@ -12,9 +12,9 @@
     align-content: center
     align-items: center
 
-@mixin flex($values)
-  -webkit-box-flex: $values
-  -moz-box-flex:  $values
-  -webkit-flex:  $values
-  -ms-flex:  $values
-  flex:  $values
+@mixin flex($dir, $justify, $alignCont : center, $alignItems : center)
+    display: flex
+    flex-direction: #{$dir}
+    justify-content: #{$justify}
+    align-content: #{$alignCont}
+    align-items: #{$alignItems}
