@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,900')
 @import url('https://fonts.googleapis.com/css?family=Arsenal:400,400i,700,700i|Lato:400,700,900')
 
+$font-btn-max : 55px
+$font-btn-min : 22px
+
 @mixin font-smoothing($value: on)
     @if $value == on
         -webkit-font-smoothing: antialiased
@@ -12,7 +15,11 @@
         -moz-osx-font-smoothing: auto
         text-rendering: optimizeLegibility
 
-$font-btn-max : 55px
-$font-btn-min : 22px
+@mixin font-mix($family, $color, $size : 1em, $weight : normal, $style : normal)
+    font-family: #{$family}, sans-serif
+    color: #{$color}
+    font-size: #{$size}
+    font-weight: #{$weight}
+    font-style: #{$style}
 // @import url('https://fonts.googleapis.com/css?family=Lobster')
 // @import url('https://fonts.googleapis.com/css?family=Titillium+Web:200')

@@ -4,7 +4,7 @@ require('smoothscroll-polyfill').polyfill();
 (function(w, doc) {
     let model = {
         header: "greetings",
-        line1: "Michael here",
+        line1: "I'm Michael",
         line2_1: "an awesom",
         line2_2: "ll right ",
         line2_3: "web developer",
@@ -38,6 +38,7 @@ require('smoothscroll-polyfill').polyfill();
             this.navIcon = document.getElementById('nav-icon');
             this.sections = document.getElementsByClassName('content');
             this.menuMin = doc.querySelector('.menu-min-wrapper');
+            this.tldrBtn = doc.querySelector('.flat-button');
             this.initEventListeners();
         },
 
@@ -56,28 +57,38 @@ require('smoothscroll-polyfill').polyfill();
             });
             view.navIcon.addEventListener('click', function() {
                 let classes = view.navIcon.classList;
-                if (classes.contains('open')) {
-                    classes.remove('open');
-                    doc.querySelector(w.location.hash).classList.remove('blured');
-                    view.menuMin.classList.remove('collapsed');
-                } else {
-                    classes.add('open');
-                    doc.querySelector(w.location.hash).classList.add('blured');
-                    view.menuMin.classList.add('collapsed');
-                }
+                view.changeBlurStatus();
+                view.toggleClass(view.navIcon, 'open');
+                view.toggleClass(view.menuMin, 'collapsed');
             });
             view.initNavigationClickListeners();
         },
 
+        changeBlurStatus: function() {
+            for (let item of view.sections) {
+                view.toggleClass(item, 'blurred');
+            }
+        },
+
+        toggleClass: function(elem, clsName) {
+            if (elem && elem.classList) {
+                if (elem.classList.contains(clsName)) {
+                    elem.classList.remove(clsName);
+                } else {
+                    elem.classList.add(clsName);
+                }
+            }
+        },
+
         writeGreeting: function() {
-            view.body.classList.add('not-scrollable');
+            view.toggleClass(doc.body, 'not-scrollable');
             let textArr = doc.querySelectorAll('#greeting>.text>.line'),
                 highlight = doc.querySelector('.line-composed + .highlight');
 
             view.writeMessage(textArr[0], model.header, 55, 450).then(() => {
                 return view.writeMessage(textArr[1], model.line1, 55, 250);
             }).then(() => {
-                return view.writeMessage(textArr[2], model.line2_1, 55, 350);
+                return view.writeMessage(textArr[2], model.line2_1, 55, 500);
             }).then(() => {
                 return view.eraseCharactersFromEnd(textArr[2], 5, 55);
             }).then(() => {
@@ -88,7 +99,7 @@ require('smoothscroll-polyfill').polyfill();
                 return view.writeMessage(textArr[3], model.line3, 55, 200);
             }).then(() => {
                 setTimeout(function() {
-                    view.body.classList.remove('not-scrollable');
+                    view.toggleClass(doc.body, 'not-scrollable');
                 }, 200);
                 doc.querySelector('.arrow-down').classList.add('fadeInUp');
                 view.navIcon.classList.add('fadeInLeft');

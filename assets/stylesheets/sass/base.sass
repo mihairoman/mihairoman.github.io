@@ -1,11 +1,13 @@
 @import fonts
-@import mobile
+@import responsive
+@import layout
 @import placeholders
 @import text-effects
 @import scrollbar
 @import navigation
 @import animation
 @import jsClasses
+@import modal
 
 html
     @extend %html_body_defaults
@@ -21,56 +23,38 @@ html
         box-sizing: border-box
 
 #home
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
+    @include flex('column')
+    @include elem-size()
     position: relative
-    height: 100vh
     background-color: white
-    //background-image: url(../../img/bg7.png)
-    color: $shadow
-    position: relative
-    transition: height 1s ease
-    font-family: 'Raleway', sans-serif
-
-    //animation: bg-color-change 6s linear 0s infinite alternate running
-        // size: cover
-        // //image: url(../../img/tam.jpg)
-        // color: $peach
-        // position: top center
-        // attachment: fixed
+    transition: .7s ease
 
     #greeting
-        width: 100%
+        @include font-mix('Raleway', $gray, 0.93em)
+        @include elem-size(25, vh, 100, vw)
         text-align: left
-        letter-spacing: 0.2em
-        padding-left: 5vw
-        text-align: left
+        letter-spacing: 0.15em
         align-self: flex-start
-        height: 20vh
         transition: 0.3s ease
 
-        & h3
-            @extend %highlight
-            display: block
+        @include bp-medium-min
             font-size: 1em
-            //font-size: 1.5em
-            // font-family: 'Source Sans Pro', sans-serif
-            font-weight: 300
-            letter-spacing: 0.13em
-            text-transform: lowercase
-            margin: 0.7vh 0
 
         & .text
-            font-family: 'Raleway'
-            color: $shadow
-            font-size: 1em
-            letter-spacing: 0.13em
+            height: inherit
+            width: inherit
+            padding-left: 7%
+            padding-left: 3vh
+            padding-right: 3%
+            padding-right: 1vh
+            line-height: 1.60em
+
+            @include bp-medium-min
+                padding-left: 1em
+                padding-left: 4vh
 
             & .line
                 display: block
-                line-height: 1.55em
 
             & .line-composed
                 display: inline-block !important
@@ -93,66 +77,49 @@ html
             cursor: pointer
 
         &>i
-            color: rgba(255, 82, 82, 0.25)
-            // color: rgba(114, 112, 119, 0.28)
-
-        // @media screen and (max-width: $break-small)
-        //     text-align: left
-        //     font-size: 2em
-        //     padding-left: 15px
-        //
-        // @media screen and (max-width: $break-medium) and (orientation: landscape)
-        //     text-align: center
-        //     font-size: 2em
-        //     padding-left: 0
-
-
-        // #greeting
-        //     transition: all 0.3s ease
-        //     width: 90vw
-        //     display: inline
-        // #cursor
-        //     width: 10vw
-        //     animation: blink-cursor 0.8s linear infinite
-        //     display: inline
+            color: rgba($pinkish, 0.35)
 
 .content
-    color: $shadow
-    height: 100vh
-    width: 100vw
+    @include elem-size(100, vh, 100, vw)
+    color: $gray
     position: relative
 
-    &.blured
+    &.blurred
         filter: blur(4px)
 
     & span.word-large
-        color: rgba(255, 82, 82, 1)
-        max-width: 100vw
+        writing-mode: vertical-lr
+        color: rgba($pinkish, 1)
+        max-width: 90%
+        max-width: 90vw
         font-family: 'Source Sans Pro', sans-serif
         font-weight: 900
         font-size: 7em
         position: absolute
-        top: 0
-        left: 0
+        top: 5%
+        top: 5vh
+        left: -5%
+        left: -5vw
         line-height: 0.75em
         opacity: 0.07
+
+        @include bp-medium-min
+            left: -2%
+            left: -2vw
 
 #experience
 
     & span.word-large
-        transform: rotate(90deg) translate(40%, 170%)
 
 #contact
     background-color: #333
 
 #about
     z-index: 10
-    width: 100vw
-    height: 100vh
 
     .word-large
-        transform: rotate(90deg) translate(60%,130%)
-        font-size: 10em
+        font-size: 11em
+        font-size: 30vh
 
     & .text-wrapper
         @include flex('column', 'space-around')
@@ -160,88 +127,49 @@ html
         width: 100%
 
         & h3
-            // color: #F25B44
-            color: #ff6c6c
-            letter-spacing: 0.07em
+            color: $pinkish
+            letter-spacing: 0.1em
 
         & .detail
-            font-size: 1.1em
-            font-family: 'Arsenal'
+            @include font-mix('Arsenal', inherit, 1.15em)
             text-align: justify
-            padding: 0 8vh
+            padding: 0 12vw
             letter-spacing: 0.03em
 
-            & span
-                @extend %highlight
+            @include bp-small-max
+                font-size: 1.03em
 
-        // & .tldr
-        //     font-size: 5em
-        //     font-weight: bold
-        //     align-self: center
-        //     color: #ff6c6c
-        //     text-shadow: 1px 1px 2px rgba(114, 112, 119, 0.8)
-
-.wrapper-vertical-nav
-    position: fixed
-    right: 5vw
-    height: 100%
-    z-index: 9000
-
-    & ul.vertical-nav
-        position: absolute
-        top: 42%
-        //transform: translateY(-50%)
-        list-style: none
-        padding: 10px
-
-        & .vertical-nav-item
-            margin-bottom: 30px
-            cursor: pointer
-
-            & a
-                transform-origin: center center
-                display: inline-block
-                width: 20px
-                height: 20px
-                border: 3px solid #e05858
-                background-color: transparent
-                border-radius: 50%
-                transition: all .5s
-                transform: scaleX(0.5) scaleY(0.5)
-                outline: none
-
+            &>p
+                & span
+                    @extend %highlight
 
 .flat-button
     @include flex('column', 'center')
-    width: 10vw
-    height: 9vw
-    min-height: 50px
-    max-width: 260px
+    @include elem-size(9, vw, 11, vw)
+    min-height: 40px
+    min-width: 120px
+    max-width: 200px
+    max-height: 55px
     padding: 0
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25)
-    background: #ff6c6c
+    text-shadow: 0 1px 2px rgba($gray, 0.45)
+    background: $pinkish
     border: 0
-    border-bottom: 4px solid #e05858
+    border-bottom: 4px solid $pinkish_dark
     cursor: pointer
-    box-shadow: inset 0 -2px #e05858
+    box-shadow: inset 0 -2px $pinkish_dark
     transform: translateY(0)
     transition: all 0.25s ease
+    outline: none
 
     &:active
-        transform: translateY(2px)
-        outline: none
+        transform: translateY(3px)
         box-shadow: none
-    &>a
-        color: white
-        font-family: 'Arsenal',sans-serif
-        font-weight: bold
-        font-size: calc(#{$font-btn-min} + (#{$font-btn-max} - #{$font-btn-min})*(100vw - #{$min-screen-width})/(#{$max-screen-width} - #{$min-screen-width}))
-        line-height: 5vw
 
-    @media screen and (min-width: $break-medium)
-         max-width: 230px
-         max-height: 70px
+    &>span
+        @extend %anchors_defaults
+        @include font-mix('Arsenal', white, 1.8em, bold)
+        line-height: 1.5em
 
-         &>a
-             line-height: 5vw
-             font-size: 5vw
+        @include bp-medium-min
+             line-height: 1.5em
+             font-size: 2.2em
