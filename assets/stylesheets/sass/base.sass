@@ -8,6 +8,8 @@
 @import animation
 @import jsClasses
 @import modal
+@import button
+@import timeline-points
 
 html
     @extend %html_body_defaults
@@ -24,10 +26,6 @@ html
 
 #home
     @include flex('column')
-    @include elem-size()
-    position: relative
-    background-color: white
-    transition: .7s ease
 
     #greeting
         @include font-mix('Raleway', $gray, 0.93em)
@@ -35,7 +33,6 @@ html
         text-align: left
         letter-spacing: 0.15em
         align-self: flex-start
-        transition: 0.3s ease
 
         @include bp-medium-min
             font-size: 1em
@@ -77,61 +74,236 @@ html
             cursor: pointer
 
         &>i
-            color: rgba($pinkish, 0.35)
+            color: rgba($redish, 0.35)
 
 .content
     @include elem-size(100, vh, 100, vw)
+    transition: filter .5s ease
     color: $gray
+    background-color: white
     position: relative
+    //filter: blur(0)
 
     &.blurred
-        filter: blur(4px)
+        filter: blur(4px) !important
 
     & span.word-large
+        @include font-mix('Lato', $redish, 10em, 700)
         writing-mode: vertical-lr
-        color: rgba($pinkish, 1)
         max-width: 90%
         max-width: 90vw
-        font-family: 'Source Sans Pro', sans-serif
-        font-weight: 900
-        font-size: 7em
         position: absolute
-        top: 5%
-        top: 5vh
-        left: -5%
-        left: -5vw
-        line-height: 0.75em
-        opacity: 0.07
+        line-height: 1em
+        opacity: 0.1
 
         @include bp-medium-min
             left: -2%
             left: -2vw
 
 #experience
+    height: 120vh
+    font-size: 0.90em
+    letter-spacing: 0.05em
 
     & span.word-large
+        transform: rotateZ(180deg)
+        right: -2vw
+        top: 7vh
+
+    & .inner
+        @include flex('column', 'center', 'center', 'flex-start')
+        position: relative
+        width: 100%
+        height: 100%
+
+        & .timeline
+            height: 90%
+            width: 2px
+            @include flex('column', 'space-around', 'center', 'flex-start')
+            padding: 0
+            margin: 0
+            background-color: rgba($gray, 0.1)
+            // box-shadow: 1px 1px 1px 0px rgba($gray, 0.30)
+            list-style: none
+            margin-left: 40px
+
+            & .row
+                @include flex('row')
+                position: relative
+                max-width: 90vw
+                height: auto
+                max-height: 150px
+                margin-left: -1000%
+
+                &.end
+                    margin-left: -300%
+
+                    &.color-yellow
+                        & .point-end
+                            border-color: $blue !important
+                            box-shadow: inset 0px 0px 0px 2px white, 0px 0px 1px 1px $blue
+
+                    & .date
+                        &>span
+                            margin-left: 21px
+                            // @include bp-medium-min
+                            //     margin-left: 15%
+
+                & .point-end
+                    @extend %timeline_point
+                    min-height: 12px
+                    min-width: 12px
+
+                    &::after
+                        @extend %timeline_lines
+                        left: 17px
+                        width: 28vw
+                        min-width: 100px
+
+                & .description
+                    font-family: 'Lato'
+                    order: 3
+                    width: 50vw
+                    height: auto
+                    margin: 0
+                    border-left: 1px dotted rgba($gray, 0.45)
+
+                    &>p
+                        margin: 0
+                        padding-left: 5px
+                        // @extend %text-shadow-gray
+
+                        &>span
+                            @extend %highlight
+
+                & .date
+                    order: 2
+                    min-width: 100px
+                    width: 26vw
+                    height: auto
+                    text-align: center
+                    align-self: center
+                    margin-bottom: 15px
+                    text-transform: lowercase
+
+                    &>span
+                        font-family: 'Lato', sans-serif
+                        font-weight: 600
+                        opacity: 0.50
+                        vertical-align: middle
+
+                & .point
+                    @extend %timeline_point
+                    @include flex()
+                    position: relative
+                    order: 1
+                    height: 40px
+                    width: 40px
+                    min-height: 40px
+                    min-width: 40px
+
+                    &>i
+                        color: white
+                        text-shadow: 2px -1px 1px $redish_shadow
+
+                    // &::before
+                    //     @extend %timeline_lines
+                    //     right: 100%
+
+                    &::after
+                        @extend %timeline_lines
+                        left: 105%
+
+                &.color-canteloupe
+                    @include timeline-row-point($canteloupe, $canteloupe_shadow)
+                &.color-yellow
+                    @include timeline-row-point($yellow, $yellow_shadow)
+                &.color-sage
+                    @include timeline-row-point($sage, $sage_shadow)
+                &.color-blue
+                    @include timeline-row-point($blue, $blue_shadow)
+                &.color-smoke
+                    @include timeline-row-point($smoke, $smoke_shadow)
+                &.color-pinkish
+                    @include timeline-row-point($pinkish, $pinkish_shadow)
+
+        // & ul
+        //     max-width: 460px
+        //     text-align: center
+        //     margin: 0 auto
+        //     padding: 0 20px
+        //     list-style: none
+        //
+        //     & li
+        //         margin: 15px 0 20px 0
+        //         padding: 15px 0
+        //         max-width: 460px
+        //         font-size: 20px
+        //         color: #90959e
+        //
+        //         & span
+        //             position: relative
+        //             display: inline-block
+        //             vertical-align: middle
+        //             width: 20%
+        //
+        //             &::before
+        //                 content: ""
+        //                 display: block
+        //                 position: absolute
+        //                 background-color: rgba(90, 144, 254, 0.2)
+        //                 height: 2px
+        //                 width: 60%
+        //                 margin: 0
+        //
+        //             &::after
+        //                 content: ""
+        //                 display: block
+        //                 position: absolute
+        //                 left: 50%
+        //                 margin-left: -10px
+        //                 margin-top: -9px
+        //                 border: 2px solid #5a90fe
+        //                 height: 20px
+        //                 width: 20px
+        //                 background-color: #fff
+        //                 border-radius: 50%
+        //
+        //             &.work
+        //                 &::before
+        //                     content: ""
+        //                     display: block
+        //                     position: absolute
+        //                     color: black
+        //                     height: 2px
+        //                     width: 60%
 
 #contact
     background-color: #333
 
 #about
-    z-index: 10
 
-    .word-large
+    & .word-large
         font-size: 11em
         font-size: 30vh
+        top: 5%
+        top: 5vh
+        left: -5%
+        left: -5vw
 
-    & .text-wrapper
+    & .inner
         @include flex('column', 'space-around')
-        height: 100%
-        width: 100%
+        height: inherit
+        width: inherit
 
         & h3
-            color: $pinkish
-            letter-spacing: 0.1em
+            @include font-mix('Raleway', inherit, 1.5em, 600)
+            color: rgba($redish, 0.8)
+            letter-spacing: 0.05em
+            border-bottom: 2px solid
 
         & .detail
-            @include font-mix('Arsenal', inherit, 1.15em)
+            @include font-mix('Lato', inherit, 1.15em)
             text-align: justify
             padding: 0 12vw
             letter-spacing: 0.03em
@@ -142,34 +314,3 @@ html
             &>p
                 & span
                     @extend %highlight
-
-.flat-button
-    @include flex('column', 'center')
-    @include elem-size(9, vw, 11, vw)
-    min-height: 40px
-    min-width: 120px
-    max-width: 200px
-    max-height: 55px
-    padding: 0
-    text-shadow: 0 1px 2px rgba($gray, 0.45)
-    background: $pinkish
-    border: 0
-    border-bottom: 4px solid $pinkish_dark
-    cursor: pointer
-    box-shadow: inset 0 -2px $pinkish_dark
-    transform: translateY(0)
-    transition: all 0.25s ease
-    outline: none
-
-    &:active
-        transform: translateY(3px)
-        box-shadow: none
-
-    &>span
-        @extend %anchors_defaults
-        @include font-mix('Arsenal', white, 1.8em, bold)
-        line-height: 1.5em
-
-        @include bp-medium-min
-             line-height: 1.5em
-             font-size: 2.2em

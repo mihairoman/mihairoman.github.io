@@ -47,7 +47,7 @@ require('smoothscroll-polyfill').polyfill();
                 w.scrollTo(0, 0);
             };
             w.addEventListener('DOMContentLoaded', function(event) {
-                setTimeout(view.writeGreeting, 300);
+                //setTimeout(view.writeGreeting, 300);
             });
             w.addEventListener("scroll", function(event) {
                 // view.topDistance = scrollY;
@@ -106,6 +106,13 @@ require('smoothscroll-polyfill').polyfill();
             });
         },
 
+        /**
+         *   Writes letter by letter a message to a DOM element. Returns a {Promise}
+         *   @param {HTMLelement} element - the DOM element in which the message will be written
+         *   @param {String} message - the message
+         *   @param {Number} speed - the speed at which to write the characters
+         *   @param {Number} resolveDelay - the delay for the callback function
+         **/
         writeMessage: function(element, message, speed = 60, resolveDelay = 0) {
             if (!element) {
                 return;
