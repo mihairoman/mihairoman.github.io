@@ -3,12 +3,13 @@ require('../stylesheets/sass/base.sass');
 require('smoothscroll-polyfill').polyfill();
 (function(w, doc) {
     let model = {
-        header: "greetings",
-        line1: "I'm Michael",
-        line2_1: "an awesom",
-        line2_2: "ll right ",
-        line2_3: "web developer",
-        line3: "let's create something together"
+        names: ['Michael', 'Mickaël', 'Mihai']
+            // header: "greetings",
+            // line1: "I'm Michael",
+            // line2_1: "an awesom",
+            // line2_2: "ll right ",
+            // line2_3: "web developer",
+            // line3: "let's create something together"
     };
 
     let controller = {
@@ -30,6 +31,7 @@ require('smoothscroll-polyfill').polyfill();
             this.body = doc.body;
             this.title = doc.getElementById('title');
             this.home = doc.getElementById('home');
+            this.nameElem = doc.getElementById('name');
             this.about = doc.getElementById('about');
             this.aboutWrapper = doc.getElementsByClassName('wrapper')[0];
             this.maxHeight = doc.getElementById('home').offsetHeight;
@@ -47,7 +49,7 @@ require('smoothscroll-polyfill').polyfill();
                 w.scrollTo(0, 0);
             };
             w.addEventListener('DOMContentLoaded', function(event) {
-                //setTimeout(view.writeGreeting, 300);
+                view.writeGreeting();
             });
             w.addEventListener("scroll", function(event) {
                 // view.topDistance = scrollY;
@@ -81,29 +83,54 @@ require('smoothscroll-polyfill').polyfill();
         },
 
         writeGreeting: function() {
-            view.toggleClass(doc.body, 'not-scrollable');
-            let textArr = doc.querySelectorAll('#greeting>.text>.line'),
-                highlight = doc.querySelector('.line-composed + .highlight');
+            // view.toggleClass(doc.body, 'not-scrollable');
+            let nameElem = doc.getElementById('name'),
+                calledStaus = false;
 
-            view.writeMessage(textArr[0], model.header, 55, 450).then(() => {
-                return view.writeMessage(textArr[1], model.line1, 55, 250);
-            }).then(() => {
-                return view.writeMessage(textArr[2], model.line2_1, 55, 500);
-            }).then(() => {
-                return view.eraseCharactersFromEnd(textArr[2], 5, 55);
-            }).then(() => {
-                return view.writeMessage(textArr[2], model.line2_2, 55, 250);
-            }).then(() => {
-                return view.writeMessage(highlight, model.line2_3, 55, 250);
-            }).then(() => {
-                return view.writeMessage(textArr[3], model.line3, 55, 200);
-            }).then(() => {
-                setTimeout(function() {
-                    view.toggleClass(doc.body, 'not-scrollable');
-                }, 200);
-                doc.querySelector('.arrow-down').classList.add('fadeInUp');
-                view.navIcon.classList.add('fadeInLeft');
-            });
+            setInterval(function() {
+                    if (!calledStaus) {
+                        calledStaus = true;
+                        (function() {
+                            view.eraseCharactersFromEnd(nameElem, view.nameElem.innerHTML.length - 2, 60).then(() => {
+                                return view.writeMessage(nameElem, model.names[0], 60, 1300).then(() => {
+                                    return view.eraseCharactersFromEnd(nameElem, model.names[0].length, 60).then(() => {
+                                        return view.writeMessage(nameElem, model.names[1], 60, 1300).then(() => {
+                                            return view.eraseCharactersFromEnd(nameElem, model.names[1].length, 60).then(() => {
+                                                return view.writeMessage(nameElem, model.names[2], 60, 1300).then(() => {
+                                                    calledStaus = false;
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        })();
+                    }
+                },
+                6000);
+
+            view.navIcon.classList.add('fadeInLeft');
+
+            // view.writeMessage(textArr[0], model.name1, 0, 450).then(() => {
+            //
+            //         return view.writeMessage(textArr[1], model.line1, 0, 250);
+            //     }).then(() => {
+            //         return view.writeMessage(textArr[2], model.line2_1, 0, 500);
+            //     }).then(() => {
+            //         return view.eraseCharactersFromEnd(textArr[2], 5, 0);
+            //     }).then(() => {
+            //         return view.writeMessage(textArr[2], model.line2_2, 0, 250);
+            //     }).then(() => {
+            //         return view.writeMessage(highlight, model.line2_3, 0, 250);
+            //     }).then(() => {
+            //         return view.writeMessage(textArr[3], model.line3, 0, 200);
+            // }).then(() => {
+            //     setTimeout(function() {
+            //         view.toggleClass(doc.body, 'not-scrollable');
+            //     }, 200);
+            //     doc.querySelector('.arrow-down').classList.add('fadeInUp');
+            //     view.navIcon.classList.add('fadeInLeft');
+            // });
         },
 
         /**

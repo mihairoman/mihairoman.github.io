@@ -25,39 +25,66 @@ html
         box-sizing: border-box
 
 #home
-    @include flex('column')
+    @include elem-size(60, vh, 100, vw)
+    background-color: $fig
+    background-image: url('../../img/stardust.png')
+    background-attachment: fixed
+    position: relative
 
-    #greeting
-        @include font-mix('Raleway', $gray, 0.93em)
-        @include elem-size(25, vh, 100, vw)
+    .inner
+        height: 100%
+        width: 100%
         text-align: left
-        letter-spacing: 0.15em
-        align-self: flex-start
-
-        @include bp-medium-min
-            font-size: 1em
 
         & .text
-            height: inherit
+            position: absolute
+            height: auto
             width: inherit
-            padding-left: 7%
-            padding-left: 3vh
-            padding-right: 3%
-            padding-right: 1vh
-            line-height: 1.60em
+            top: 40%
+            word-break: break-word
+            text-align: center
 
-            @include bp-medium-min
-                padding-left: 1em
-                padding-left: 4vh
+            @include bp-small-max
+                text-align: center
 
             & .line
                 display: block
+                font-family: $fnt-raleway
+                letter-spacing: 0.05em
+                //line-height: 1.20em
 
-            & .line-composed
-                display: inline-block !important
+                &:nth-child(1)
+                    color: white
+                    font-size: 1.3em
+                    font-weight: 300
 
-            & .highlight
-                @extend %highlight
+                    @include bp-small-max
+                        line-height: 1.5em
+                    @include bp-medium-min
+                        font-weight: 300
+                        font-size: 1.5em
+
+                &:nth-child(2)
+                    color: $cheese
+                    letter-spacing: 2px
+                    font-weight: bold
+                    font-size: 2.2em
+
+                    text-transform: uppercase
+
+                    @include bp-small-max
+                        font-size:  1.8em
+                    @include bp-medium-min
+                        font-size: 3.2em
+                    @include bp-large-min
+                        font-size: 4em
+
+
+            // & .line-composed
+            //     display: inline-block !important
+            //
+            // & .highlight
+            //     @extend %highlight
 
     & a.arrow-down
         text-decoration: none
@@ -80,35 +107,43 @@ html
     @include elem-size(100, vh, 100, vw)
     transition: filter .5s ease
     color: $gray
-    background-color: white
     position: relative
-    //filter: blur(0)
+    padding: 0
+
 
     &.blurred
         filter: blur(4px) !important
 
-    & span.word-large
-        @include font-mix('Lato', $redish, 10em, 700)
+    & .word-large
+        @include font-mix('Raleway',inherit,inherit,900)
+        text-transform: uppercase
         writing-mode: vertical-lr
-        max-width: 90%
-        max-width: 90vw
         position: absolute
         line-height: 1em
-        opacity: 0.1
-
-        @include bp-medium-min
-            left: -2%
-            left: -2vw
+        opacity: 0.15
 
 #experience
-    height: 120vh
+    @include elem-size(120, vh, 100, vw)
     font-size: 0.90em
-    letter-spacing: 0.05em
+    z-index: 10
 
-    & span.word-large
-        transform: rotateZ(180deg)
-        right: -2vw
-        top: 7vh
+    @include bp-small-max
+        @include elem-size(140, vh, 100, vw)
+
+    & .word-large
+        right: -12%
+        right: -12vw
+        top: 5%
+        font-size: 9em
+        font-size: 18vh
+        opacity: 0.17
+        color: $yellow
+
+        @include bp-small-max
+            top: 6%
+            right: -15%
+            right: -15vw
+            font-size: 20vh
 
     & .inner
         @include flex('column', 'center', 'center', 'flex-start')
@@ -122,8 +157,7 @@ html
             @include flex('column', 'space-around', 'center', 'flex-start')
             padding: 0
             margin: 0
-            background-color: rgba($gray, 0.1)
-            // box-shadow: 1px 1px 1px 0px rgba($gray, 0.30)
+            background-color: rgba($gray, 0.2)
             list-style: none
             margin-left: 40px
 
@@ -161,12 +195,14 @@ html
                         min-width: 100px
 
                 & .description
-                    font-family: 'Lato'
+                    font-family: 'Raleway'
+                    @include font-mix('Roboto', inherit, inherit, 300)
                     order: 3
                     width: 50vw
                     height: auto
                     margin: 0
                     border-left: 1px dotted rgba($gray, 0.45)
+                    letter-spacing: 0.07em
 
                     &>p
                         margin: 0
@@ -187,9 +223,8 @@ html
                     text-transform: lowercase
 
                     &>span
-                        font-family: 'Lato', sans-serif
-                        font-weight: 600
-                        opacity: 0.50
+                        @include font-mix($fnt-raleway)
+                        opacity: 0.75
                         vertical-align: middle
 
                 & .point
@@ -218,8 +253,8 @@ html
                     @include timeline-row-point($canteloupe, $canteloupe_shadow)
                 &.color-yellow
                     @include timeline-row-point($yellow, $yellow_shadow)
-                &.color-sage
-                    @include timeline-row-point($sage, $sage_shadow)
+                &.color-mint
+                    @include timeline-row-point($mint, $mint_shadow)
                 &.color-blue
                     @include timeline-row-point($blue, $blue_shadow)
                 &.color-smoke
@@ -279,38 +314,143 @@ html
         //                     width: 60%
 
 #contact
-    background-color: #333
-
-#about
+    @include elem-size(25, vh, 100, vw)
+    overflow-y: hidden
 
     & .word-large
-        font-size: 11em
-        font-size: 30vh
-        top: 5%
-        top: 5vh
-        left: -5%
-        left: -5vw
+        writing-mode: initial
+        color: $cyan
+        font-size: 6em
+        font-size: 25vw
+        min-width: 100%
+        text-align: center
+        top: 10%
+        opacity: 0.12
+
+        @include bp-small-max
+            top: 0
+            font-size: 4em
+            font-size: 22vw
+
+    & .wrapper
+        position: absolute
+        width: 100%
+        top: 40%
+
+        & ul
+            list-style: none
+            color: $pinkish
+            text-align: center
+            margin: 0
+            padding: 0
+            width: 100%
+
+            &>li
+                display: inline-block
+                display: inline-block
+                padding: 0 2em
+                padding: 0 8vw
+
+                & .fa-github-alt
+                    border-radius: 50%
+                    background-color: #727077
+                    color: #ffffff
+                    padding: 8px 9px
+                    vertical-align: super
+
+                &>i
+                    // text-shadow: 0px 1px 2px $gray
+
+#about
+    @include elem-size(100, vh, 100, vw)
+
+    @include bp-small-max
+        height: 110%
+        height: 110vh
+
+    @include bp-medium-min
+        @include flex()
+        @include elem-size(60, vh, 100, vw)
+
+    @include bp-large-min
+        @include elem-size(40, vh, 100, vw)
 
     & .inner
         @include flex('column', 'space-around')
-        height: inherit
-        width: inherit
+        height: 100%
+        width: 100%
 
-        & h3
-            @include font-mix('Raleway', inherit, 1.5em, 600)
-            color: rgba($redish, 0.8)
-            letter-spacing: 0.05em
-            border-bottom: 2px solid
+        @include bp-medium-min
+            @include flex('row', 'space-around', 'center', 'flex-start')
+            height: auto
 
         & .detail
-            @include font-mix('Lato', inherit, 1.15em)
+            @include font-mix('Raleway', $gray, 0.80em, 400)
+            line-height: 1.5em
             text-align: justify
-            padding: 0 12vw
-            letter-spacing: 0.03em
+            letter-spacing: 1px
+            width: 70%
+            width: 70vw
 
-            @include bp-small-max
-                font-size: 1.03em
+            @include bp-medium-min
+                width: 23%
+                width: 23vw
 
-            &>p
-                & span
-                    @extend %highlight
+            @include bp-large-min
+                width: 17%
+                width: 17vw
+
+            & h3
+                @include font-mix($fnt-raleway, $gray, 1.8em, 300)
+                margin: 0
+                text-align: center
+                line-height: 1.5em
+
+                @include bp-small-max
+                    font-size: 1.5em
+
+            & .items
+                @include flex('row', 'space-start')
+                line-height: 2em
+                color: white
+                font-weight: 400
+                list-style: none
+                padding: 0
+                flex-wrap: wrap
+
+                &>li
+                    display: inline-block
+                    padding: 1px 6px
+                    margin-bottom: 5px
+                    margin: 3px 5px
+                    text-align: center
+
+                    &:nth-child(odd)
+                        flex-grow: 1
+
+                    &:last-child
+                        flex-grow: 0
+
+                    &:hover
+                        cursor: pointer
+                        opacity: 0.8
+
+                &.worked
+                    &>li
+                        background-color: $blueish
+                &.learning
+                    &>li
+                        background-color: $greenish
+
+                        &:nth-last-child(2)
+                            flex-grow: 0
+
+                            @include bp-small-max
+                                flex-grow: 1
+
+
+
+
+#skills
+    @include elem-size(40, vh, 100, vw)
+    background-color: $mint_shadow
