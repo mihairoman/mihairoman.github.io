@@ -4,12 +4,6 @@ require('smoothscroll-polyfill').polyfill();
 (function(w, doc) {
     let model = {
         names: ['Michael', 'Mickaël', 'Mihai']
-            // header: "greetings",
-            // line1: "I'm Michael",
-            // line2_1: "an awesom",
-            // line2_2: "ll right ",
-            // line2_3: "web developer",
-            // line3: "let's create something together"
     };
 
     let controller = {
@@ -42,6 +36,7 @@ require('smoothscroll-polyfill').polyfill();
             this.menuMin = doc.querySelector('.menu-min-wrapper');
             this.tldrBtn = doc.querySelector('.flat-button');
             this.initEventListeners();
+            this.initAbout();
         },
 
         initEventListeners: function() {
@@ -49,17 +44,17 @@ require('smoothscroll-polyfill').polyfill();
                 w.scrollTo(0, 0);
             };
             w.addEventListener('DOMContentLoaded', function(event) {
-                view.writeGreeting();
+                view.initHome();
             });
-            w.addEventListener("scroll", function(event) {
+            w.scroll = w.onmousewheel = w.onwheel = function(event) {
                 // view.topDistance = scrollY;
                 // if (view.topDistance < view.maxHeight) {
                 //     view.requestTick(view.parallaxTitle);
                 // }
-            });
+                view.requestTick(view.changeMenuIconStatus);
+            };
             view.navIcon.addEventListener('click', function() {
                 let classes = view.navIcon.classList;
-                view.changeBlurStatus();
                 view.toggleClass(view.navIcon, 'open');
                 view.toggleClass(view.menuMin, 'collapsed');
             });
@@ -69,6 +64,27 @@ require('smoothscroll-polyfill').polyfill();
         changeBlurStatus: function() {
             for (let item of view.sections) {
                 view.toggleClass(item, 'blurred');
+            }
+        },
+
+        /** Checks if element is visible on screen in reference to what percentage of the element is visible
+         *** @param {HTMLelement} element - the element to check
+         *** @param {Number} percentOfElemVisible - the percentage of the element which represents
+         ***                                         the threshold at which the element is considered visible or not (values from 0 to 100)
+         **/
+        isElemOnScreen: function(element, percentOfElemVisible) {
+            let elemHeight = element.offsetHeight,
+                distFromTop = element.getBoundingClientRect().top,
+                threshold = elemHeight * (percentOfElemVisible / 100);
+            return (elemHeight + distFromTop) > threshold;
+        },
+
+        changeMenuIconStatus: function() {
+            view.ticking = false;
+            if (view.about.getBoundingClientRect().top < 0) {
+                view.navIcon.classList.add('negative');
+            } else {
+                view.navIcon.classList.remove('negative');
             }
         },
 
@@ -82,13 +98,32 @@ require('smoothscroll-polyfill').polyfill();
             }
         },
 
-        writeGreeting: function() {
-            // view.toggleClass(doc.body, 'not-scrollable');
+        addAnimationToRandomElem: function(list, animationCls) {
+            let rand = Math.floor(Math.random() * list.length);
+            list[rand].classList.add(animationCls);
+            setTimeout(function() {
+                list[rand].classList.remove(animationCls)
+            }, 1100);
+        },
+
+        initHome: function() {
+            view.writeName();
+        },
+
+        initAbout: function() {
+            let items = doc.querySelectorAll('.detail .items>li');
+            setInterval(function() {
+                view.addAnimationToRandomElem(items, 'is-emph');
+            }, 2500);
+        },
+
+
+        writeName: function() {
             let nameElem = doc.getElementById('name'),
                 calledStaus = false;
 
             setInterval(function() {
-                    if (!calledStaus) {
+                    if (!calledStaus && view.isElemOnScreen(view.home, 40)) {
                         calledStaus = true;
                         (function() {
                             view.eraseCharactersFromEnd(nameElem, view.nameElem.innerHTML.length - 2, 60).then(() => {
@@ -108,29 +143,7 @@ require('smoothscroll-polyfill').polyfill();
                     }
                 },
                 6000);
-
             view.navIcon.classList.add('fadeInLeft');
-
-            // view.writeMessage(textArr[0], model.name1, 0, 450).then(() => {
-            //
-            //         return view.writeMessage(textArr[1], model.line1, 0, 250);
-            //     }).then(() => {
-            //         return view.writeMessage(textArr[2], model.line2_1, 0, 500);
-            //     }).then(() => {
-            //         return view.eraseCharactersFromEnd(textArr[2], 5, 0);
-            //     }).then(() => {
-            //         return view.writeMessage(textArr[2], model.line2_2, 0, 250);
-            //     }).then(() => {
-            //         return view.writeMessage(highlight, model.line2_3, 0, 250);
-            //     }).then(() => {
-            //         return view.writeMessage(textArr[3], model.line3, 0, 200);
-            // }).then(() => {
-            //     setTimeout(function() {
-            //         view.toggleClass(doc.body, 'not-scrollable');
-            //     }, 200);
-            //     doc.querySelector('.arrow-down').classList.add('fadeInUp');
-            //     view.navIcon.classList.add('fadeInLeft');
-            // });
         },
 
         /**
@@ -193,25 +206,17 @@ require('smoothscroll-polyfill').polyfill();
             });
         },
 
-        changeCursorAnimation: function(state) {
-            return new Promise(function(resolve, reject) {
-                view.titleCursor.style.WebkitAnimationPlayState = state;
-                view.titleCursor.style.animationPlayState = state;
-                resolve();
-            });
-        },
-
-        displayMenu: function() {
-            let listElems = view.navbar.children,
-                i = 0;
-            for (i; i < listElems.length; i++) {
-                (function(elem, index) {
-                    setTimeout(function() {
-                        elem.classList.add('visible-menu-item');
-                    }, 100 * (index * 3));
-                })(listElems[i], i);
-            }
-        },
+        // displayMenu: function() {
+        //     let listElems = view.navbar.children,
+        //         i = 0;
+        //     for (i; i < listElems.length; i++) {
+        //         (function(elem, index) {
+        //             setTimeout(function() {
+        //                 elem.classList.add('visible-menu-item');
+        //             }, 100 * (index * 3));
+        //         })(listElems[i], i);
+        //     }
+        // },
 
         /**
          *   Performs CSS modifications on the title in order to achieve a parallax & blurr effect

@@ -123,144 +123,173 @@ html
         opacity: 0.15
 
 #experience
-    @include elem-size(120, vh, 100, vw)
+    width: 100%
+    width: 100vw
+    height: auto
     font-size: 0.90em
-    z-index: 10
-
-    @include bp-small-max
-        @include elem-size(140, vh, 100, vw)
-
-    & .word-large
-        right: -12%
-        right: -12vw
-        top: 5%
-        font-size: 9em
-        font-size: 18vh
-        opacity: 0.17
-        color: $yellow
-
-        @include bp-small-max
-            top: 6%
-            right: -15%
-            right: -15vw
-            font-size: 20vh
+    background-color: $fig
+    background-image: url('../../img/stardust.png')
+    background-attachment: fixed
+    color: white
 
     & .inner
-        @include flex('column', 'center', 'center', 'flex-start')
-        position: relative
+        text-align: center
         width: 100%
-        height: 100%
+        height: auto
+
+        & .timeline-line
+            background-color: white
+            display: block
+            position: absolute
+            left: 40%
+            margin-left: -1px
+            height: 100%
+            width: 2px
+
+            @include bp-medium-min
+                left: 50%
 
         & .timeline
-            height: 90%
-            width: 2px
-            @include flex('column', 'space-around', 'center', 'flex-start')
-            padding: 0
-            margin: 0
-            background-color: rgba($gray, 0.2)
             list-style: none
-            margin-left: 40px
+            max-width: 600px
+            text-align: center
+            margin: 0 auto
+            padding: 20px 20px
+
+            @include bp-large-min
+                max-width: 700px
+
 
             & .row
-                @include flex('row')
-                position: relative
-                max-width: 90vw
-                height: auto
-                max-height: 150px
-                margin-left: -1000%
+                margin: 15px 0 20px 0
+                padding: 15px 0
+
+                @include bp-large-min
+                    padding: 25px 0
 
                 &.end
-                    margin-left: -300%
+                    display: none
 
-                    &.color-yellow
-                        & .point-end
-                            border-color: $blue !important
-                            box-shadow: inset 0px 0px 0px 2px white, 0px 0px 1px 1px $blue
 
-                    & .date
-                        &>span
-                            margin-left: 21px
-                            // @include bp-medium-min
-                            //     margin-left: 15%
+                // &.end
+                //     margin-left: -300%
+                //
+                //     & .date
+                //         &>span
+                //             margin-left: 21px
+                //             // @include bp-medium-min
+                //             //     margin-left: 15%
 
-                & .point-end
-                    @extend %timeline_point
-                    min-height: 12px
-                    min-width: 12px
-
-                    &::after
-                        @extend %timeline_lines
-                        left: 17px
-                        width: 28vw
-                        min-width: 100px
+                    // &::after
+                    //     @extend %timeline_lines
+                    //     left: 17px
+                    //     width: 28vw
+                    //     min-width: 100px
 
                 & .description
-                    font-family: 'Raleway'
-                    @include font-mix('Roboto', inherit, inherit, 300)
-                    order: 3
-                    width: 50vw
-                    height: auto
-                    margin: 0
-                    border-left: 1px dotted rgba($gray, 0.45)
-                    letter-spacing: 0.07em
+                    @include font-mix($fnt-raleway, inherit, 0.90em, 300)
+                    letter-spacing: 0.1em
+                    text-align: left
+                    line-height: 1.4em
+                    display: inline-block
+                    vertical-align: middle
+                    width: 45%
+
+                    @include bp-small-max
+                        letter-spacing: 0.04
+
+                    @include bp-medium-min
+                        width: 30%
+
+                    @include bp-large-min
+                        width: 40%
 
                     &>p
-                        margin: 0
-                        padding-left: 5px
+                        // margin: 0
+                        // padding-left: 5px
                         // @extend %text-shadow-gray
 
                         &>span
-                            @extend %highlight
+                            color: $highligh-yellow
 
                 & .date
-                    order: 2
-                    min-width: 100px
-                    width: 26vw
-                    height: auto
-                    text-align: center
-                    align-self: center
-                    margin-bottom: 15px
                     text-transform: lowercase
+                    position: relative
+                    line-height: 1.2em
+                    text-align: right
+                    display: inline-block
+                    width: 25%
+                    letter-spacing: 0.05em
+                    word-break: break-word
+
+                    @include bp-medium-min
+                        width: 30%
+
+                    @include bp-large-min
+                        width: 40%
 
                     &>span
-                        @include font-mix($fnt-raleway)
-                        opacity: 0.75
+                        display: inline-block
                         vertical-align: middle
+                        position: relative
+
+                    // &>span
+                    //     @include font-mix($fnt-raleway)
+                    //     opacity: 0.75
+                    //     vertical-align: middle
 
                 & .point
-                    @extend %timeline_point
-                    @include flex()
                     position: relative
-                    order: 1
-                    height: 40px
-                    width: 40px
-                    min-height: 40px
-                    min-width: 40px
+                    display: inline-block
+                    vertical-align: middle
+                    width: 20%
 
-                    &>i
-                        color: white
-                        text-shadow: 2px -1px 1px $redish_shadow
+                    @include bp-large-min
+                        width: 18%
+
+                    &::before
+                        content: ""
+                        display: block
+                        position: absolute
+                        background-color: rgba(white, 0.3)
+                        height: 2px
+                        width: 50%
+                        left: 20%
+
+                        @include bp-small-max
+                            left: 18%
+                        @include bp-medium-min
+                            left: 25%                        
+
+                    &::after
+                        content: ""
+                        display: block
+                        position: absolute
+                        left: 50%
+                        margin-left: -10px
+                        margin-top: -5px
+                        border: 2px solid white
+                        border-radius: 50%
+                        height: 12px
+                        width: 12px
+                        background-color: $fig
+
+                        @include bp-medium-min
+                            margin-left: -6px
+
+                & .point-end
+                    @extend %circle
+                    border: 2px solid white
+                    min-height: 12px
+                    min-width: 12px
 
                     // &::before
                     //     @extend %timeline_lines
                     //     right: 100%
 
-                    &::after
-                        @extend %timeline_lines
-                        left: 105%
-
-                &.color-canteloupe
-                    @include timeline-row-point($canteloupe, $canteloupe_shadow)
-                &.color-yellow
-                    @include timeline-row-point($yellow, $yellow_shadow)
-                &.color-mint
-                    @include timeline-row-point($mint, $mint_shadow)
-                &.color-blue
-                    @include timeline-row-point($blue, $blue_shadow)
-                &.color-smoke
-                    @include timeline-row-point($smoke, $smoke_shadow)
-                &.color-pinkish
-                    @include timeline-row-point($pinkish, $pinkish_shadow)
+                    // &::after
+                    //     @extend %timeline_lines
+                    //     left: 105%
 
         // & ul
         //     max-width: 460px
@@ -362,18 +391,17 @@ html
                     // text-shadow: 0px 1px 2px $gray
 
 #about
-    @include elem-size(100, vh, 100, vw)
+    @include elem-size(115, vh, 100, vw)
 
     @include bp-small-max
-        height: 110%
-        height: 110vh
+        height: auto
 
     @include bp-medium-min
         @include flex()
         @include elem-size(60, vh, 100, vw)
 
     @include bp-large-min
-        @include elem-size(40, vh, 100, vw)
+        @include elem-size(50, vh, 100, vw)
 
     & .inner
         @include flex('column', 'space-around')
@@ -392,6 +420,9 @@ html
             width: 70%
             width: 70vw
 
+            @include bp-small-max
+                margin: 10% 0
+
             @include bp-medium-min
                 width: 23%
                 width: 23vw
@@ -400,14 +431,36 @@ html
                 width: 17%
                 width: 17vw
 
-            & h3
-                @include font-mix($fnt-raleway, $gray, 1.8em, 300)
-                margin: 0
+            & .detail-title
                 text-align: center
-                line-height: 1.5em
+                margin-bottom: 25px
 
-                @include bp-small-max
-                    font-size: 1.5em
+                &>span
+                    @include font-mix($fnt-raleway, $gray, 1.8em, 300)
+                    margin: 0
+                    text-align: center
+                    line-height: 1.5em
+                    position: relative
+                    cursor: default
+
+                    &::after
+                        content: ""
+                        position: absolute
+                        background-color: rgba($gray, 0.60)
+                        width: 60%
+                        height: 1px
+                        bottom: -10px
+                        right: 20%
+                        transition: 0.35s ease
+
+                    &:hover
+                        &::after
+                            right: 0
+                            width: 100%
+
+
+                    @include bp-small-max
+                        font-size: 1.5em
 
             & .items
                 @include flex('row', 'space-start')
@@ -424,6 +477,13 @@ html
                     margin-bottom: 5px
                     margin: 3px 5px
                     text-align: center
+                    transition: opacity 0.35s ease
+                    cursor: default
+
+                    &.is-emph
+                        animation-name: shake
+                        animation-duration: 1s
+                        animation-fill-mode: both
 
                     &:nth-child(odd)
                         flex-grow: 1
@@ -432,13 +492,12 @@ html
                         flex-grow: 0
 
                     &:hover
-                        cursor: pointer
-                        opacity: 0.8
+                        opacity: 0.7
 
                 &.worked
                     &>li
                         background-color: $blueish
-                &.learning
+                &.focusing
                     &>li
                         background-color: $greenish
 
@@ -447,10 +506,3 @@ html
 
                             @include bp-small-max
                                 flex-grow: 1
-
-
-
-
-#skills
-    @include elem-size(40, vh, 100, vw)
-    background-color: $mint_shadow

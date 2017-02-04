@@ -1,15 +1,19 @@
 @import main-colors
 
-// @keyframes blink-cursor
-//   0%
-//       color: $brownish
-//   50%
-//       color: transparent
+@keyframes pulse
+    from
+        transform: scale3d(1, 1, 1)
+    50%
+        transform: scale3d(1.15, 1.15, 1.15)
+    to
+        transform: scale3d(1, 1, 1)
 
-// @keyframes fadeInUp
-//   from
-//     opacity: 0
-//     transform: translate3d(0, 100%, 0)
-//   to
-//     opacity: 1
-//     transform: none
+@keyframes shake
+    from, to
+        transform: translate3d(0, 0, 0)
+
+    10%, 30%, 50%, 70%, 90%
+        transform: translate3d(-2px, 0, 0)
+
+    20%, 40%, 60%, 80%
+        transform: translate3d(2px, 0, 0)

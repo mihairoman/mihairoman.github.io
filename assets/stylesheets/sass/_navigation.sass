@@ -88,7 +88,7 @@
         opacity: 0
         z-index: 10
         position: fixed
-        background-color: rgba($fig, 0.70)
+        background-color: rgba($fig, 0.90)
 
         & ul
             @include flex('column', 'space-around', 'center', 'center')
@@ -122,6 +122,12 @@
         z-index: 100
         opacity: 0
 
+
+        &.negative
+            & span
+                background: $gray
+                box-shadow: none
+
         &.fadeInLeft
             transition: right 0.75s ease, opacity 0.75s ease
             right: 5%
@@ -132,11 +138,11 @@
             position: absolute
             height: 2px
             width: 50%
-            background: $cheese
+            background: white
             opacity: 1
             transform: rotate(0)
             transition: .35s ease
-            //box-shadow: 0px 1px 2px 1px rgba($canteloupe_shadow, 0.6)
+            box-shadow: 1px 1px 1px 0px rgba($fig, 0.8)
 
             &:nth-child(even)
                 left: 50%
