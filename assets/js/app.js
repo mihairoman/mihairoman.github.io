@@ -1,7 +1,7 @@
-require('../index.html');
-require('../stylesheets/sass/base.sass');
-require('smoothscroll-polyfill').polyfill();
 (function(w, doc) {
+    const zenscroll = require('zenscroll');
+    require('../index.html');
+    require('../stylesheets/sass/base.sass');
     let model = {
         names: ['Michael', 'Mickaël', 'Mihai']
     };
@@ -18,47 +18,57 @@ require('smoothscroll-polyfill').polyfill();
         title: null,
         ticking: false,
         delay: false,
-        greetingElem: null,
         currentHash: '#home',
 
         init: function() {
             this.body = doc.body;
-            this.title = doc.getElementById('title');
+            this.title = doc.querySelector('.text');
             this.home = doc.getElementById('home');
+            this.experience = doc.getElementById('experience');
+            this.contact = doc.getElementById('contact');
             this.nameElem = doc.getElementById('name');
             this.about = doc.getElementById('about');
+            this.timeline = document.querySelector('.timeline-line');
+            this.timelineElems = document.querySelectorAll('#experience .timeline>.row:not(.end)');
             this.aboutWrapper = doc.getElementsByClassName('wrapper')[0];
             this.maxHeight = doc.getElementById('home').offsetHeight;
-            this.greetingElem = doc.getElementById('greeting');
-            this.navbar = doc.getElementsByClassName('navbar-list')[0];
+            this.verticalNav = doc.getElementById('vertical-nav');
             this.navIcon = document.getElementById('nav-icon');
             this.sections = document.getElementsByClassName('content');
             this.menuMin = doc.querySelector('.menu-min-wrapper');
-            this.tldrBtn = doc.querySelector('.flat-button');
             this.initEventListeners();
+            this.initHome();
             this.initAbout();
+            this.initExperience();
         },
 
         initEventListeners: function() {
-            w.onbeforeunload = function(event) {
-                w.scrollTo(0, 0);
-            };
             w.addEventListener('DOMContentLoaded', function(event) {
-                view.initHome();
+                w.location.hash = "";
+                w.onbeforeunload = function(event) {
+                    w.scrollTo(0, 0);
+                    w.location.hash = "";
+                };
+                view.navIcon.addEventListener('click', function() {
+                    let classes = view.navIcon.classList;
+                    view.toggleClass(view.navIcon, 'open');
+                    view.toggleClass(view.menuMin, 'collapsed');
+                });
+                w.scroll = w.onmousewheel = w.onwheel = function(event) {
+                    // view.topDistance = scrollY;
+                    // if (view.topDistance < view.maxHeight) {
+                    //     view.requestTick(view.parallaxTitle);
+                    // }
+                    if (view.experience.getBoundingClientRect().top < (view.experience.offsetHeight * 0.8)) {
+                        view.revealTimeline();
+                    }
+                    if (view.experience.getBoundingClientRect().top < -20) {
+                        view.requestTick(view.initContact);
+                    }
+
+                };
+                view.initNavigationClickListeners();
             });
-            w.scroll = w.onmousewheel = w.onwheel = function(event) {
-                // view.topDistance = scrollY;
-                // if (view.topDistance < view.maxHeight) {
-                //     view.requestTick(view.parallaxTitle);
-                // }
-                view.requestTick(view.changeMenuIconStatus);
-            };
-            view.navIcon.addEventListener('click', function() {
-                let classes = view.navIcon.classList;
-                view.toggleClass(view.navIcon, 'open');
-                view.toggleClass(view.menuMin, 'collapsed');
-            });
-            view.initNavigationClickListeners();
         },
 
         changeBlurStatus: function() {
@@ -67,10 +77,54 @@ require('smoothscroll-polyfill').polyfill();
             }
         },
 
+        initExperience: function() {
+            let timelineList = view.experience.querySelectorAll('.row'),
+                i = timelineList.length;
+            for (i; i--;) {
+                timelineList[i].addEventListener('click', function(event) {
+                    if (event.target.tagName.toLowerCase() === "li") {
+                        let classes = event.target.classList.toString(),
+                            linkNr = classes.match(/linked-[0-9]/),
+                            matchedEndRow = view.experience.querySelector(`.end.${linkNr}`);
+                        view.toggleClass(matchedEndRow, 'revealed');
+                    }
+                }, true);
+            }
+        },
+
+        revealTimeline: function() {
+            view.timeline.classList.add('revealed');
+            view.addClassToListElems(view.timelineElems, 'revealed', 150);
+        },
+
+        revealVerticalNav: function() {
+            let verticalNavElems = view.verticalNav.querySelectorAll('li');
+            view.addClassToListElems(verticalNavElems, 'revealed', 150);
+        },
+
+        initContact: function() {
+            let contactList = view.contact.querySelectorAll('li'),
+                contactTitle = view.contact.querySelector('.content-title'),
+                i = contactList.length;
+            contactTitle.classList.add('revealed');
+            for (i; i--;) {
+                setTimeout((function(index) {
+                    return function() {
+                        contactList[index].classList.add('revealed');
+                        contactList[index].addEventListener('click', function(event) {
+                            event.preventDefault();
+                            let link = event.target.parentElement.getAttribute('href');
+                            w.open(link, '_blank');
+                        });
+                    }
+                })(i), 100 * i);
+            }
+        },
+
         /** Checks if element is visible on screen in reference to what percentage of the element is visible
          *** @param {HTMLelement} element - the element to check
          *** @param {Number} percentOfElemVisible - the percentage of the element which represents
-         ***                                         the threshold at which the element is considered visible or not (values from 0 to 100)
+         *** the threshold at which the element is considered visible or not (values from 0 to 100)
          **/
         isElemOnScreen: function(element, percentOfElemVisible) {
             let elemHeight = element.offsetHeight,
@@ -79,10 +133,15 @@ require('smoothscroll-polyfill').polyfill();
             return (elemHeight + distFromTop) > threshold;
         },
 
-        changeMenuIconStatus: function() {
+        changeMenuIconColor: function() {
+            let aboutHeight = view.about.offsetHeight,
+                aboutTopOffset = view.about.getBoundingClientRect().top;
+            console.log(aboutHeight, aboutTopOffset);
             view.ticking = false;
-            if (view.about.getBoundingClientRect().top < 0) {
-                view.navIcon.classList.add('negative');
+            if (aboutTopOffset < 100 && (aboutHeight + aboutTopOffset) > 0) {
+                if (!view.navIcon.classList.contains('negative')) {
+                    view.navIcon.classList.add('negative');
+                }
             } else {
                 view.navIcon.classList.remove('negative');
             }
@@ -98,31 +157,57 @@ require('smoothscroll-polyfill').polyfill();
             }
         },
 
+        addClassToListElems: function(list, newClass, delay) {
+            if (list && list.length) {
+                let i = 0,
+                    n = list.length;
+                for (i; i < n; i++) {
+                    setTimeout((function(index) {
+                        return function() {
+                            list[index].classList.add(newClass);
+                        }
+                    })(i), delay * i);
+                }
+            }
+        },
+
         addAnimationToRandomElem: function(list, animationCls) {
             let rand = Math.floor(Math.random() * list.length);
             list[rand].classList.add(animationCls);
             setTimeout(function() {
-                list[rand].classList.remove(animationCls)
+                list[rand].classList.remove(animationCls);
             }, 1100);
         },
 
         initHome: function() {
-            view.writeName();
+            setTimeout(view.writeName, 1000);
+            view.navIcon.classList.add('fadeInLeft');
+            view.home.classList.add('minified');
+            view.title.classList.add('revealed');
+            setTimeout(view.revealVerticalNav, 1000);
         },
 
         initAbout: function() {
-            let items = doc.querySelectorAll('.detail .items>li');
+            let details = doc.querySelectorAll('#about .detail'),
+                i = details.length,
+                items = doc.querySelectorAll('.detail .items>li');
+            for (i; i--;) {
+                details[i].classList.add('revealed');
+            }
             setInterval(function() {
-                view.addAnimationToRandomElem(items, 'is-emph');
+                if ((view.about.getBoundingClientRect().top + view.about.offsetHeight) > 100) {
+                    view.addAnimationToRandomElem(items, 'is-emph');
+                }
             }, 2500);
         },
 
-
+        /*
+         * TODO: clean up this callback hell
+         */
         writeName: function() {
             let nameElem = doc.getElementById('name'),
                 calledStaus = false;
-
-            setInterval(function() {
+            setInterval(function writeStuff() {
                     if (!calledStaus && view.isElemOnScreen(view.home, 40)) {
                         calledStaus = true;
                         (function() {
@@ -141,9 +226,9 @@ require('smoothscroll-polyfill').polyfill();
                             });
                         })();
                     }
-                },
+                    return writeStuff;
+                }(),
                 6000);
-            view.navIcon.classList.add('fadeInLeft');
         },
 
         /**
@@ -206,28 +291,6 @@ require('smoothscroll-polyfill').polyfill();
             });
         },
 
-        // displayMenu: function() {
-        //     let listElems = view.navbar.children,
-        //         i = 0;
-        //     for (i; i < listElems.length; i++) {
-        //         (function(elem, index) {
-        //             setTimeout(function() {
-        //                 elem.classList.add('visible-menu-item');
-        //             }, 100 * (index * 3));
-        //         })(listElems[i], i);
-        //     }
-        // },
-
-        /**
-         *   Performs CSS modifications on the title in order to achieve a parallax & blurr effect
-         */
-        parallaxTitle: function() {
-            view.ticking = false;
-            //view.title.style.transform = `translate(0px, ${view.topDistance/2.2}px)`;
-            //view.title.style.webkitFilter = `blur(${view.topDistance/300}px)`;
-            //  view.title.style.transform = `scale(${1-view.topDistance/2000})`;
-        },
-
         /**
          *   General function for animation optimizations. Passes to {@link requestAnimationFrame} the function
          *   which performs DOM modifications. If a {@link requestAnimationFrame} is already requested, we won't initiate another one.
@@ -242,70 +305,37 @@ require('smoothscroll-polyfill').polyfill();
 
 
         initNavigationClickListeners: function() {
-            //.wrapper-vertical-nav>ul>li>a'
             let navElems = doc.querySelectorAll('nav>ul>li>a'),
-                i = 0,
-                length = navElems.length;
-            for (i; i < length; i++) {
+                i = navElems.length;
+            for (i; i--;) {
                 let elem = navElems[i];
-                elem.onclick = function(event) {
-                    event.preventDefault();
-                    let to = elem.getAttribute('href');
-                    view.updateSelectedNavItem(elem, to);
-                    doc.querySelector(to).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                    //view.changeURLHash(to);
-                };
+                elem.addEventListener('click', view.navLinkClick);
             }
         },
 
-        // initCustomScroll: function() {
-        //     view.topDistance = w.pageYOffset || w.scrollTop;
-        //     w.scroll = w.onmousewheel = w.onwheel = function(event) {
-        //         let st = w.pageYOffset || doc.documentElement.scrollTop;
-        //         if (st > view.topDistance) {
-        //             //donwscroll code
-        //             let currentNavItem = doc.querySelector('nav>ul>.selected-nav-item'),
-        //                 nextNavItem = currentNavItem.nextElementSibling;
-        //             if (nextNavItem) {
-        //                 let anchorElem = nextNavItem.getElementsByTagName('a')[0],
-        //                     nextLocation = anchorElem.getAttribute('href');
-        //                 view.updateSelectedNavItem(nextNavItem, nextLocation);
-        //                 view.ticking = false;
-        //                 view.requestTick(function() {
-        //                     doc.querySelector(nextLocation).scrollIntoView({
-        //                         behavior: 'smooth'
-        //                     });
-        //                 });
-        //             }
-        //         } else {
-        //             // upscroll code
-        //             let currentNavItem = doc.querySelector('nav>ul>.selected-nav-item'),
-        //                 prevNavItem = currentNavItem.previousElementSibling;
-        //             if (prevNavItem) {
-        //                 let anchorElem = prevNavItem.getElementsByTagName('a')[0],
-        //                     nextLocation = anchorElem.getAttribute('href');
-        //                 view.updateSelectedNavItem(prevNavItem, nextLocation);
-        //                 view.ticking = false;
-        //                 view.requestTick(function() {
-        //                     doc.querySelector(nextLocation).scrollIntoView({
-        //                         behavior: 'instant'
-        //                     });
-        //                 });
-        //             }
-        //         }
-        //         view.topDistance = st;
-        //     };
-        // },
+        navLinkClick: function(e) {
+            e.preventDefault();
+            let elem = e.target,
+                to = elem.getAttribute('href');
+            view.toggleClass(view.navIcon, 'open');
+            view.toggleClass(view.menuMin, 'collapsed');
+            zenscroll.intoView(doc.querySelector(to), 100);
+            if (to === "#contact") {
+                view.initContact();
+                view.revealTimeline();
+            } else if (to === "#experience") {
+                view.revealTimeline();
+            }
+            return false;
+        },
 
         updateSelectedNavItem: function(newElem, newLocation) {
-            // doc.querySelector('nav>ul>.selected-nav-item').classList.remove('selected-nav-item');
-            // if (newElem.tagName === 'LI') {
-            //     newElem.classList.add('selected-nav-item');
-            // } else {
-            //     newElem.parentElement.classList.add('selected-nav-item');
-            // }
+            doc.querySelector('nav>ul>.selected-nav-item').classList.remove('selected-nav-item');
+            if (newElem.tagName === 'LI') {
+                newElem.classList.add('selected-nav-item');
+            } else {
+                newElem.parentElement.classList.add('selected-nav-item');
+            }
             view.changeURLHash(newLocation);
         },
 
@@ -321,30 +351,3 @@ require('smoothscroll-polyfill').polyfill();
 
     controller.init();
 })(window, document);
-
-//view.initCustomScroll();
-//     w.onmousewheel = w.onwheel = function(event) {
-//         view.topDistance = scrollY;
-//         event.preventDefault();
-//         if (view.delay) {
-//             return
-//         };
-//         view.delay = true;
-//         setTimeout(function() {
-//             view.delay = false
-//         }, 200);
-//         let wd = event.wheelDelta || -event.detail;
-//         let content = doc.getElementsByClassName('content');
-//         if (wd < 0) {
-//             for (let i = 0; i < content.length; i++) {
-//                 let t = content[i].getClientRects()[0].top;
-//                 if (t >= 40) break;
-//             }
-//         } else {
-//             for (let i = content.length - 1; i >= 0; i--) {
-//                 let t = content[i].getClientRects()[0].top;
-//                 if (t < -20) break;
-//             }
-//         }
-//         //view.requestTick();
-//     };

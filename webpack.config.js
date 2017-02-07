@@ -5,7 +5,7 @@ module.exports = {
     context: __dirname,
     watch: true,
     //define entry point
-    entry: './assets/js/functions.js',
+    entry: './assets/js/app.js',
     //define output point
     output: {
         path: path.join(__dirname, 'dist'),
@@ -14,7 +14,7 @@ module.exports = {
     module: {
         preLoaders: [{
             test: /\.js$/,
-            exclude: /node_modules/,
+            exclude: /node_modules|smoothscroll.js/,
             loader: "jshint-loader"
         }],
         loaders: [{

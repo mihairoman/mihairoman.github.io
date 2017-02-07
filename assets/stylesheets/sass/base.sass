@@ -17,19 +17,20 @@ html
     body
         @extend %html_body_defaults
         @include font-smoothing(on)
-        overflow-y: auto
-
 
 *
     &::after, &::before
         box-sizing: border-box
 
 #home
-    @include elem-size(60, vh, 100, vw)
-    background-color: $fig
-    background-image: url('../../img/stardust.png')
-    background-attachment: fixed
+    @include elem-size(100, vh, 100, vw)
+    @extend %dark-bg
     position: relative
+    transition: height 1s cubic-bezier(0.07, 0.36, 0.51, 1.38) 0.75s
+
+    &.minified
+        height: 60%
+        height: 60vh
 
     .inner
         height: 100%
@@ -43,6 +44,11 @@ html
             top: 40%
             word-break: break-word
             text-align: center
+            opacity: 0
+            transition: opacity 0.75s ease-out
+
+            &.revealed
+                opacity: 1
 
             @include bp-small-max
                 text-align: center
@@ -51,7 +57,6 @@ html
                 display: block
                 font-family: $fnt-raleway
                 letter-spacing: 0.05em
-                //line-height: 1.20em
 
                 &:nth-child(1)
                     color: white
@@ -79,37 +84,17 @@ html
                     @include bp-large-min
                         font-size: 4em
 
-
-            // & .line-composed
-            //     display: inline-block !important
-            //
-            // & .highlight
-            //     @extend %highlight
-
-    & a.arrow-down
-        text-decoration: none
-        position: absolute
-        bottom: -5vh
-        opacity: 0
-        transition: all 1s ease
-
-        &.fadeInUp
-            bottom: 10vh
-            opacity: 1
-
-        &:hover
-            cursor: pointer
-
-        &>i
-            color: rgba($redish, 0.35)
-
 .content
     @include elem-size(100, vh, 100, vw)
-    transition: filter .5s ease
+    transition: .25s ease
     color: $gray
     position: relative
     padding: 0
 
+    & p, & span
+        &::selection
+            background-color: rgba($fig, 0.8)
+            color: white
 
     &.blurred
         filter: blur(4px) !important
@@ -123,14 +108,17 @@ html
         opacity: 0.15
 
 #experience
+    @extend %dark-bg
     width: 100%
     width: 100vw
     height: auto
     font-size: 0.90em
-    background-color: $fig
-    background-image: url('../../img/stardust.png')
-    background-attachment: fixed
     color: white
+
+    & p, & span
+        &::selection
+            background-color: black
+            color: white
 
     & .inner
         text-align: center
@@ -143,8 +131,12 @@ html
             position: absolute
             left: 40%
             margin-left: -1px
-            height: 100%
             width: 2px
+            transition: height 1.5s ease
+            height: 0
+
+            &.revealed
+                height: 100%
 
             @include bp-medium-min
                 left: 50%
@@ -163,28 +155,43 @@ html
             & .row
                 margin: 15px 0 20px 0
                 padding: 15px 0
+                opacity: 0
+                transition: opacity 1s ease .15s
+
+                &.revealed
+                    opacity: 1
+
+                &:hover
+                    cursor: pointer
+                    & .point
+                        &::before, &::after
+                            transition: .5s ease
+                        &::after
+                            border-color: $cheese
+                        &::before
+                            background-color: $cheese
+
 
                 @include bp-large-min
                     padding: 25px 0
 
                 &.end
-                    display: none
+                    opacity: 0
+                    margin: 0
+                    padding: 0
+                    height: 0
+                    transition: all 0.35s ease
 
+                    &.revealed
+                        transition: all 0.35s ease
+                        opacity: 1
+                        margin: 15px 0 20px 0
+                        padding: 15px 0
+                        height: auto
 
-                // &.end
-                //     margin-left: -300%
-                //
-                //     & .date
-                //         &>span
-                //             margin-left: 21px
-                //             // @include bp-medium-min
-                //             //     margin-left: 15%
-
-                    // &::after
-                    //     @extend %timeline_lines
-                    //     left: 17px
-                    //     width: 28vw
-                    //     min-width: 100px
+                &.completed
+                    & .point::after
+                        background-color: white
 
                 & .description
                     @include font-mix($fnt-raleway, inherit, 0.90em, 300)
@@ -194,6 +201,7 @@ html
                     display: inline-block
                     vertical-align: middle
                     width: 45%
+                    pointer-events: none
 
                     @include bp-small-max
                         letter-spacing: 0.04
@@ -205,10 +213,6 @@ html
                         width: 40%
 
                     &>p
-                        // margin: 0
-                        // padding-left: 5px
-                        // @extend %text-shadow-gray
-
                         &>span
                             color: $highligh-yellow
 
@@ -221,7 +225,10 @@ html
                     width: 25%
                     letter-spacing: 0.05em
                     word-break: break-word
+                    pointer-events: none
 
+                    @include bp-small-max
+                        font-size: 0.88em
                     @include bp-medium-min
                         width: 30%
 
@@ -233,19 +240,19 @@ html
                         vertical-align: middle
                         position: relative
 
-                    // &>span
-                    //     @include font-mix($fnt-raleway)
-                    //     opacity: 0.75
-                    //     vertical-align: middle
 
-                & .point
+                & .point, & .point-end
                     position: relative
                     display: inline-block
                     vertical-align: middle
                     width: 20%
+                    pointer-events: none
 
                     @include bp-large-min
                         width: 18%
+
+                    &::before, &::after
+                        transition: 0.5s ease
 
                     &::before
                         content: ""
@@ -259,7 +266,7 @@ html
                         @include bp-small-max
                             left: 18%
                         @include bp-medium-min
-                            left: 25%                        
+                            left: 25%
 
                     &::after
                         content: ""
@@ -278,123 +285,99 @@ html
                             margin-left: -6px
 
                 & .point-end
-                    @extend %circle
-                    border: 2px solid white
-                    min-height: 12px
-                    min-width: 12px
-
-                    // &::before
-                    //     @extend %timeline_lines
-                    //     right: 100%
-
-                    // &::after
-                    //     @extend %timeline_lines
-                    //     left: 105%
-
-        // & ul
-        //     max-width: 460px
-        //     text-align: center
-        //     margin: 0 auto
-        //     padding: 0 20px
-        //     list-style: none
-        //
-        //     & li
-        //         margin: 15px 0 20px 0
-        //         padding: 15px 0
-        //         max-width: 460px
-        //         font-size: 20px
-        //         color: #90959e
-        //
-        //         & span
-        //             position: relative
-        //             display: inline-block
-        //             vertical-align: middle
-        //             width: 20%
-        //
-        //             &::before
-        //                 content: ""
-        //                 display: block
-        //                 position: absolute
-        //                 background-color: rgba(90, 144, 254, 0.2)
-        //                 height: 2px
-        //                 width: 60%
-        //                 margin: 0
-        //
-        //             &::after
-        //                 content: ""
-        //                 display: block
-        //                 position: absolute
-        //                 left: 50%
-        //                 margin-left: -10px
-        //                 margin-top: -9px
-        //                 border: 2px solid #5a90fe
-        //                 height: 20px
-        //                 width: 20px
-        //                 background-color: #fff
-        //                 border-radius: 50%
-        //
-        //             &.work
-        //                 &::before
-        //                     content: ""
-        //                     display: block
-        //                     position: absolute
-        //                     color: black
-        //                     height: 2px
-        //                     width: 60%
+                    &::after, &::before
+                        border-color: $cheese
+                        background-color: $cheese
+                    &::before
+                        left: 25%
+                        width: 25%
 
 #contact
-    @include elem-size(25, vh, 100, vw)
+    @include elem-size(35, vh, 100, vw)
     overflow-y: hidden
-
-    & .word-large
-        writing-mode: initial
-        color: $cyan
-        font-size: 6em
-        font-size: 25vw
-        min-width: 100%
-        text-align: center
-        top: 10%
-        opacity: 0.12
-
-        @include bp-small-max
-            top: 0
-            font-size: 4em
-            font-size: 22vw
-
-    & .wrapper
-        position: absolute
-        width: 100%
-        top: 40%
-
-        & ul
-            list-style: none
-            color: $pinkish
-            text-align: center
-            margin: 0
-            padding: 0
-            width: 100%
-
-            &>li
-                display: inline-block
-                display: inline-block
-                padding: 0 2em
-                padding: 0 8vw
-
-                & .fa-github-alt
-                    border-radius: 50%
-                    background-color: #727077
-                    color: #ffffff
-                    padding: 8px 9px
-                    vertical-align: super
-
-                &>i
-                    // text-shadow: 0px 1px 2px $gray
-
-#about
-    @include elem-size(115, vh, 100, vw)
+    bottom: 0
 
     @include bp-small-max
-        height: auto
+        height: 45%
+        height: 45vh
+
+    & .inner
+        @include flex('column', 'space-around')
+        height: 90%
+        width: 100%
+
+        & .content-title
+            text-align: center
+            opacity: 0
+            &.revealed
+                opacity: 1
+                animation-name: bounceInDown
+                animation-duration: 1s
+                animation-fill-mode: both
+
+            & .small-title
+                @extend %small-title
+            & .mail
+                display: block
+                padding-top: 20px
+                letter-spacing: 0.2em
+
+                @include bp-small-max
+                    font-size: 0.80em
+
+            @include bp-small-max
+                padding-top: 10px
+
+        & ul
+            @include flex('row', 'space-around')
+            list-style: none
+            color: $gray
+            text-align: center
+            margin: 0 auto
+            padding: 0
+            width: 90%
+
+            @include bp-small-max
+                flex-wrap: wrap
+            @include bp-medium-min
+                width: 70%
+            @include bp-large-min
+                width: 50%
+
+            &>li
+                font-size: 2em
+                opacity: 0
+
+                @include bp-medium-min
+                    font-size: 1.5em
+
+                &.revealed
+                    animation-name: bounceInUp
+                    animation-duration: 1s
+                    animation-fill-mode: both
+                    opacity: 1
+
+                &:hover
+                    & .fa
+                        color: white
+                        background-color: $fig
+                        animation-name: pulse
+                        animation-duration: 0.35s
+                        animation-fill-mode: both
+
+                & .fa
+                    transition: 0.35s ease
+                    color: rgba($fig, 0.6)
+                    padding: 10px 12px
+                    background-color: transparent
+                    @include bp-medium-min
+                        font-size: 2em
+
+
+#about
+    height: auto
+    width: 100%
+    background-color: white
 
     @include bp-medium-min
         @include flex()
@@ -404,28 +387,44 @@ html
         @include elem-size(50, vh, 100, vw)
 
     & .inner
-        @include flex('column', 'space-around')
-        height: 100%
+        @include flex('column', 'center')
+        height: auto
         width: 100%
 
         @include bp-medium-min
             @include flex('row', 'space-around', 'center', 'flex-start')
-            height: auto
+            margin: auto 0
+            width: 95%
+
+        @include bp-large-min
+            width: 80%
 
         & .detail
-            @include font-mix('Raleway', $gray, 0.80em, 400)
+            @include font-mix('Raleway', $gray, 0.82em, 400)
             line-height: 1.5em
             text-align: justify
             letter-spacing: 1px
             width: 70%
             width: 70vw
+            padding: 10% 0
+            opacity: 0
+            transition: opacity 1s ease .5s
+
+            &:nth-child(2)
+                transition: opacity 1s ease 0.9s
+            &:nth-child(3)
+                transition: opacity 1s ease 1.3s
+
+            &.revealed
+                opacity: 1
 
             @include bp-small-max
-                margin: 10% 0
+                padding: 5% 0
 
             @include bp-medium-min
                 width: 23%
                 width: 23vw
+                padding: 0
 
             @include bp-large-min
                 width: 17%
@@ -436,31 +435,7 @@ html
                 margin-bottom: 25px
 
                 &>span
-                    @include font-mix($fnt-raleway, $gray, 1.8em, 300)
-                    margin: 0
-                    text-align: center
-                    line-height: 1.5em
-                    position: relative
-                    cursor: default
-
-                    &::after
-                        content: ""
-                        position: absolute
-                        background-color: rgba($gray, 0.60)
-                        width: 60%
-                        height: 1px
-                        bottom: -10px
-                        right: 20%
-                        transition: 0.35s ease
-
-                    &:hover
-                        &::after
-                            right: 0
-                            width: 100%
-
-
-                    @include bp-small-max
-                        font-size: 1.5em
+                    @extend %small-title
 
             & .items
                 @include flex('row', 'space-start')
@@ -499,7 +474,7 @@ html
                         background-color: $blueish
                 &.focusing
                     &>li
-                        background-color: $greenish
+                        background-color: $cheese
 
                         &:nth-last-child(2)
                             flex-grow: 0

@@ -2,7 +2,7 @@
   "name": "personal-page",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,9 +30,10 @@
     "jshint-loader": "^0.8.3",
     "node-sass": "^3.4.2",
     "postcss-loader": "^1.2.1",
+    "raf": "^3.3.0",
     "sass-loader": "^4.0.2",
-    "smoothscroll-polyfill": "^0.3.4",
     "style-loader": "^0.13.1",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "zenscroll": "^3.3.0"
   }
 }

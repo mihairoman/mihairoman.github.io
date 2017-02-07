@@ -9,6 +9,7 @@
     margin: 0
     box-sizing: border-box
     overflow-x: hidden
+    height: auto
 
 %anchors_defaults
     text-decoration: none
@@ -16,20 +17,39 @@
     &:hover
         cursor: pointer
 
-%highlight
-    color: $redish
-
-%timeline_lines
-    content: ""
-    min-width: 100px
-    width: 26vw
-    height: 1px
-    background-color: rgba($gray, 0.2)
-    position: absolute
-    top: 50%
-
 %circle
     border-radius: 50%
 
 %text-shadow-gray
     text-shadow: 1px 1px 1px rgba($gray, 0.42)
+
+%dark-bg
+    background-color: $fig
+    background-image: url('../../img/stardust.png')
+    background-attachment: scroll
+
+%small-title
+    @include font-mix($fnt-raleway, $gray, 1.8em, 300)
+    margin: 0
+    text-align: center
+    line-height: 1.5em
+    position: relative
+    cursor: default
+
+    &::after
+        content: ""
+        position: absolute
+        background-color: rgba($gray, 0.60)
+        width: 60%
+        height: 1px
+        bottom: -10px
+        right: 20%
+        transition: 0.35s ease
+
+    &:hover
+        &::after
+            right: 0
+            width: 100%
+
+    @include bp-small-max
+        font-size: 1.5em
