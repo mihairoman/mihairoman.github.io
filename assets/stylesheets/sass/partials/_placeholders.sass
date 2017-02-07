@@ -1,10 +1,7 @@
-@import fonts
-@import main-colors
-
 %html_body_defaults
     height: 100%
     width: 100%
-    font-family: "Raleway", sans-serif
+    font-family: $fnt-raleway
     font-size: 100%
     margin: 0
     box-sizing: border-box
@@ -26,10 +23,9 @@
 %dark-bg
     background-color: $fig
     background-image: url('../../img/stardust.png')
-    background-attachment: scroll
 
 %small-title
-    @include font-mix($fnt-raleway, $gray, 1.8em, 300)
+    @include font-mix($fnt-raleway, $gray, 1.6em, 300)
     margin: 0
     text-align: center
     line-height: 1.5em
@@ -52,4 +48,4 @@
             width: 100%
 
     @include bp-small-max
-        font-size: 1.5em
+        font-size: 1.4em

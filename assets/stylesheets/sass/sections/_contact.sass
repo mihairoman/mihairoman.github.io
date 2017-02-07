@@ -1,0 +1,75 @@
+#contact
+    @include elem-size(35, vh, 100, vw)
+    @include flex()
+    overflow-y: hidden
+    bottom: 0
+
+    @include bp-small-max
+        height: 45%
+        height: 45vh
+
+    & .inner
+        @include flex('column', 'space-around')
+        height: 90%
+        width: 100%
+
+        @include bp-small-max
+            height: 80%
+
+        & .content-title
+            text-align: center
+            opacity: 0
+            &.revealed
+                opacity: 1
+                @include animationDescr(bounceInDown)
+
+            & .small-title
+                @extend %small-title
+            & .mail
+                display: block
+                padding-top: 20px
+                letter-spacing: 0.1em
+
+                @include bp-small-max
+                    font-size: 0.80em
+
+        & ul
+            @include flex('row', 'space-around')
+            list-style: none
+            color: $gray
+            text-align: center
+            margin: 0 auto
+            padding: 0
+            width: 90%
+
+            @include bp-small-max
+                flex-wrap: wrap
+            @include bp-medium-min
+                width: 70%
+            @include bp-large-min
+                width: 50%
+
+            &>li
+                font-size: 2em
+                opacity: 0
+
+                @include bp-medium-min
+                    font-size: 1.5em
+
+                &.revealed
+                    @include animationDescr(bounceInUp)
+                    opacity: 1
+
+                &:hover
+                    & .fa
+                        @include animationDescr(pulse, .35s)
+                        color: white
+                        background-color: $fig
+
+                & .fa
+                    transition: 0.35s ease
+                    color: rgba($fig, 0.6)
+                    padding: 10px 12px
+                    background-color: transparent
+                    @include bp-medium-min
+                        font-size: 2em

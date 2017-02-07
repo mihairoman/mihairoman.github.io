@@ -1,7 +1,7 @@
 (function(w, doc) {
     const zenscroll = require('zenscroll');
     require('../index.html');
-    require('../stylesheets/sass/base.sass');
+    require('../stylesheets/sass/main.sass');
     let model = {
         names: ['Michael', 'Mickaël', 'Mihai']
     };
@@ -18,6 +18,8 @@
         title: null,
         ticking: false,
         delay: false,
+        timelineRevealed: false,
+        contactRevealed: false,
         currentHash: '#home',
 
         init: function() {
@@ -55,15 +57,13 @@
                     view.toggleClass(view.menuMin, 'collapsed');
                 });
                 w.scroll = w.onmousewheel = w.onwheel = function(event) {
-                    // view.topDistance = scrollY;
-                    // if (view.topDistance < view.maxHeight) {
-                    //     view.requestTick(view.parallaxTitle);
-                    // }
-                    if (view.experience.getBoundingClientRect().top < (view.experience.offsetHeight * 0.8)) {
+                    if (!view.timelineRevealed && (view.experience.getBoundingClientRect().top < (view.experience.offsetHeight * 0.8))) {
                         view.revealTimeline();
+                        view.timelineRevealed = true;
                     }
-                    if (view.experience.getBoundingClientRect().top < -20) {
+                    if (!view.contactRevealed && view.experience.getBoundingClientRect().top < -20) {
                         view.requestTick(view.initContact);
+                        view.contactRevealed = true;
                     }
 
                 };
@@ -94,12 +94,12 @@
 
         revealTimeline: function() {
             view.timeline.classList.add('revealed');
-            view.addClassToListElems(view.timelineElems, 'revealed', 150);
+            view.initNodeListElems(view.timelineElems, 'revealed', 150);
         },
 
         revealVerticalNav: function() {
             let verticalNavElems = view.verticalNav.querySelectorAll('li');
-            view.addClassToListElems(verticalNavElems, 'revealed', 150);
+            view.initNodeListElems(verticalNavElems, 'revealed', 150);
         },
 
         initContact: function() {
@@ -107,18 +107,13 @@
                 contactTitle = view.contact.querySelector('.content-title'),
                 i = contactList.length;
             contactTitle.classList.add('revealed');
-            for (i; i--;) {
-                setTimeout((function(index) {
-                    return function() {
-                        contactList[index].classList.add('revealed');
-                        contactList[index].addEventListener('click', function(event) {
-                            event.preventDefault();
-                            let link = event.target.parentElement.getAttribute('href');
-                            w.open(link, '_blank');
-                        });
-                    }
-                })(i), 100 * i);
-            }
+            view.initNodeListElems(contactList, 'revealed', 100, 'click', view.clickContactLink)
+        },
+
+        clickContactLink: function(event) {
+            event.preventDefault();
+            let link = event.target.parentElement.getAttribute('href');
+            w.open(link, '_blank');
         },
 
         /** Checks if element is visible on screen in reference to what percentage of the element is visible
@@ -136,7 +131,6 @@
         changeMenuIconColor: function() {
             let aboutHeight = view.about.offsetHeight,
                 aboutTopOffset = view.about.getBoundingClientRect().top;
-            console.log(aboutHeight, aboutTopOffset);
             view.ticking = false;
             if (aboutTopOffset < 100 && (aboutHeight + aboutTopOffset) > 0) {
                 if (!view.navIcon.classList.contains('negative')) {
@@ -157,16 +151,21 @@
             }
         },
 
-        addClassToListElems: function(list, newClass, delay) {
+        initNodeListElems: function(list, newClass, delay, newEventName, eventHandler) {
             if (list && list.length) {
                 let i = 0,
                     n = list.length;
                 for (i; i < n; i++) {
-                    setTimeout((function(index) {
-                        return function() {
-                            list[index].classList.add(newClass);
-                        }
-                    })(i), delay * i);
+                    if (newClass) {
+                        setTimeout((function(index) {
+                            return function() {
+                                list[index].classList.add(newClass);
+                            }
+                        })(i), parseInt(delay) * i);
+                    }
+                    if (newEventName) {
+                        list[i].addEventListener(newEventName, eventHandler);
+                    }
                 }
             }
         },
@@ -205,7 +204,7 @@
          * TODO: clean up this callback hell
          */
         writeName: function() {
-            let nameElem = doc.getElementById('name'),
+            let nameElem = view.nameElem,
                 calledStaus = false;
             setInterval(function writeStuff() {
                     if (!calledStaus && view.isElemOnScreen(view.home, 40)) {

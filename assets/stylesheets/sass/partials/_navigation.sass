@@ -1,20 +1,16 @@
-@import flexbox
-@import main-colors
-@import layout
-
 .menu-min-wrapper
     height: 0px
     width: 0px
     position: absolute
-
-    @include bp-large-min
-        display: none
 
     &.collapsed
         @include font-smoothing(on)
         @include elem-size(100, vh, 100, vw)
         opacity: 1
         z-index: 100
+
+        @include bp-large-min
+            display: none
 
         & #nav-min
             transition: all 0.35s ease
@@ -47,8 +43,8 @@
 
             & li
                 @include elem-size(22, %, 100, %)
+                @include flex()
                 text-align: center
-                @include flex-row
 
                 & a
                     @extend %anchors_defaults
@@ -157,7 +153,6 @@
     & ul.vertical-nav
         position: absolute
         top: 42%
-        //transform: translateY(-50%)
         list-style: none
         padding: 10px
 
@@ -180,6 +175,13 @@
                 border: 3px solid white
                 background-color: $fig
                 border-radius: 50%
-                transition: all .5s
+                transition: all .35s ease
                 transform: scaleX(0.5) scaleY(0.5)
                 outline: none
+
+                &:hover
+                    border: 3px solid $cheese
+                    background-color: $cheese
+                    animation-name: pulse-easy
+                    animation-duration: .35s
+                    animation-fill-mode: both

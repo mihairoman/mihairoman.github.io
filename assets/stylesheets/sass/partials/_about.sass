@@ -1,0 +1,105 @@
+#about
+    height: auto
+    width: 100%
+    background-color: white
+
+    @include bp-medium-min
+        @include flex()
+        @include elem-size(60, vh, 100, vw)
+
+    @include bp-large-min
+        @include elem-size(50, vh, 100, vw)
+
+    & .inner
+        @include flex('column', 'center')
+        height: auto
+        width: 100%
+
+        @include bp-medium-min
+            @include flex('row', 'space-around', 'center', 'flex-start')
+            margin: auto 0
+            width: 95%
+
+        @include bp-large-min
+            width: 80%
+
+        & .detail
+            @include font-mix('Raleway', $gray, 0.82em, 400)
+            line-height: 1.5em
+            text-align: justify
+            letter-spacing: 1px
+            width: 70%
+            width: 70vw
+            padding: 10% 0
+            opacity: 0
+            @include animationDescr(bounceInUp, 1s, both, 1s)
+
+            &:nth-child(2)
+                @include animationDescr(bounceInUp, 1s, both, 1.3s)
+            &:nth-child(3)
+                @include animationDescr(bounceInUp, 1s, both, 1.6s)
+
+            &.revealed
+                opacity: 1
+
+            @include bp-small-max
+                padding: 5% 0
+
+            @include bp-medium-min
+                width: 23%
+                width: 23vw
+                padding: 0
+
+            @include bp-large-min
+                width: 17%
+                width: 17vw
+
+            & .detail-title
+                text-align: center
+                margin-bottom: 25px
+
+                &>span
+                    @extend %small-title
+
+            & .items
+                @include flex('row', 'space-start')
+                line-height: 2em
+                color: white
+                font-weight: 400
+                list-style: none
+                padding: 0
+                flex-wrap: wrap
+
+                &>li
+                    display: inline-block
+                    padding: 1px 6px
+                    margin-bottom: 5px
+                    margin: 3px 5px
+                    text-align: center
+                    transition: opacity 0.35s ease
+                    cursor: default
+
+                    &.is-emph
+                        @include animationDescr(shake)
+
+                    &:nth-child(odd)
+                        flex-grow: 1
+
+                    &:last-child
+                        flex-grow: 0
+
+                    &:hover
+                        opacity: 0.7
+
+                &.worked
+                    &>li
+                        background-color: $blueish
+                &.focusing
+                    &>li
+                        background-color: $cheese
+
+                        &:nth-last-child(2)
+                            flex-grow: 0
+
+                            @include bp-small-max
+                                flex-grow: 1

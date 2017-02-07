@@ -1,0 +1,184 @@
+#experience
+    @extend %dark-bg
+    width: 100%
+    width: 100vw
+    height: auto
+    font-size: 0.90em
+    color: white
+
+    & p, & span
+        &::selection
+            background-color: black
+            color: white
+
+    & .inner
+        text-align: center
+        width: 100%
+        height: auto
+
+        & .timeline-line
+            background-color: white
+            display: block
+            position: absolute
+            left: 40%
+            margin-left: -1px
+            width: 2px
+            transition: height 1.5s ease
+            height: 0
+
+            &.revealed
+                height: 100%
+
+            @include bp-medium-min
+                left: 50%
+
+        & .timeline
+            list-style: none
+            max-width: 600px
+            text-align: center
+            margin: 0 auto
+            padding: 20px 20px
+
+            @include bp-large-min
+                max-width: 700px
+
+
+            & .row
+                margin: 15px 0 20px 0
+                padding: 15px 0
+                opacity: 0
+                transition: opacity 1s ease .15s
+
+                &.revealed
+                    opacity: 1
+
+                &:hover
+                    cursor: pointer
+                    & .point
+                        &::before, &::after
+                            transition: .5s ease
+                        &::after
+                            border-color: $cheese
+                        &::before
+                            background-color: $cheese
+
+
+                @include bp-large-min
+                    padding: 25px 0
+
+                &.end
+                    opacity: 0
+                    margin: 0
+                    padding: 0
+                    height: 0
+                    transition: all 0.35s ease
+
+                    &.revealed
+                        transition: all 0.35s ease
+                        opacity: 1
+                        margin: 15px 0 20px 0
+                        padding: 15px 0
+                        height: auto
+
+                &.completed
+                    & .point::after
+                        background-color: white
+
+                & .description
+                    @include font-mix($fnt-raleway, inherit, 0.90em, 300)
+                    letter-spacing: 0.1em
+                    text-align: left
+                    line-height: 1.4em
+                    display: inline-block
+                    vertical-align: middle
+                    width: 45%
+                    pointer-events: none
+
+                    @include bp-small-max
+                        letter-spacing: 0.04
+
+                    @include bp-medium-min
+                        width: 30%
+
+                    @include bp-large-min
+                        width: 40%
+
+                    &>p
+                        &>span
+                            color: $highligh-yellow
+
+                & .date
+                    text-transform: lowercase
+                    position: relative
+                    line-height: 1.2em
+                    text-align: right
+                    display: inline-block
+                    width: 25%
+                    letter-spacing: 0.05em
+                    word-break: break-word
+                    pointer-events: none
+
+                    @include bp-small-max
+                        font-size: 0.88em
+                    @include bp-medium-min
+                        width: 30%
+
+                    @include bp-large-min
+                        width: 40%
+
+                    &>span
+                        display: inline-block
+                        vertical-align: middle
+                        position: relative
+
+
+                & .point, & .point-end
+                    position: relative
+                    display: inline-block
+                    vertical-align: middle
+                    width: 20%
+                    pointer-events: none
+
+                    @include bp-large-min
+                        width: 18%
+
+                    &::before, &::after
+                        transition: 0.5s ease
+
+                    &::before
+                        content: ""
+                        display: block
+                        position: absolute
+                        background-color: rgba(white, 0.3)
+                        height: 2px
+                        width: 50%
+                        left: 20%
+
+                        @include bp-small-max
+                            left: 18%
+                        @include bp-medium-min
+                            left: 25%
+
+                    &::after
+                        content: ""
+                        display: block
+                        position: absolute
+                        left: 50%
+                        margin-left: -10px
+                        margin-top: -5px
+                        border: 2px solid white
+                        border-radius: 50%
+                        height: 12px
+                        width: 12px
+                        background-color: $fig
+
+                        @include bp-medium-min
+                            margin-left: -6px
+
+                & .point-end
+                    &::after, &::before
+                        border-color: $cheese
+                        background-color: $cheese
+                    &::before
+                        left: 25%
+                        width: 25%

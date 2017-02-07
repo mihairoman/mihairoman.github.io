@@ -14,7 +14,7 @@ module.exports = {
     module: {
         preLoaders: [{
             test: /\.js$/,
-            exclude: /node_modules|smoothscroll.js/,
+            exclude: /node_modules/,
             loader: "jshint-loader"
         }],
         loaders: [{
@@ -25,7 +25,7 @@ module.exports = {
                 presets: ['es2015']
             }
         }, {
-            test: /\.(jpe?g|png|gif|svg)$/i,
+            test: /\.(jpe?g|png|gif|svg|ico)$/i,
             exclude: /node_modules/,
             //include: path.join(__dirname, 'assets/img'),
             loaders: [
@@ -44,6 +44,6 @@ module.exports = {
     },
     devtool: '#source-map',
     plugins: [
-        new ExtractTextPlugin('base.css')
+        new ExtractTextPlugin('style.css')
     ]
 }
